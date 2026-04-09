@@ -6,7 +6,7 @@ Sunshine OS, including but not limited to its design, layout, source code, funct
 
 Authorized Third-Party Usage
 Certain features within Sunshine OS utilize proxy services. The creator of Sunshine OS has received explicit permission from Flux to use his proxy for specific links and integrations within the platform. This usage is authorized and compliant with the terms granted by Flux.
-
+the creator has allowed beepbeepdev to fork this
 Restrictions
 No part of Sunshine OS may be copied, reproduced, distributed, modified, reverse-engineered, or exploited in any form without prior written permission from the owner. This includes:
 
