@@ -3,7 +3,7 @@
 <head>
 <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
-<title>Sunshine OS</title>
+<title>Cole's OS</title>
 <link rel="preconnect" href="https://fonts.googleapis.com">
 <link href="https://fonts.googleapis.com/css2?family=SF+Pro+Display:wght@300;400;500;600&family=Inter:wght@300;400;500;600;700&display=swap" rel="stylesheet">
 <style>
@@ -743,7 +743,7 @@
 <div id="startup">
   <div class="sun-rays"></div>
   <div class="sun"></div>
-  <div class="start-logo">Sunshine OS</div>
+  <div class="start-logo">Cole's OS</div>
   <div class="start-sub">Version 2.0</div>
   <button class="enter-btn" onclick="enterOS()">Enter</button>
 </div>
@@ -859,7 +859,7 @@
     <span class="win-title">Netflix</span>
     <div style="width:52px;"></div>
   </div>
-  <iframe src="about:blank" data-src="https://sunshineduponu.b-cdn.net/embed.html?url=https://mathiscoolz.b-cdn.net/"></iframe>
+  <iframe src="about:blank" data-src="https://mathiscoolz.b-cdn.net/"></iframe>
 </div>
 
 <div class="window" id="win-spotify">
@@ -872,7 +872,7 @@
     <span class="win-title">Spotify / YouTube Music</span>
     <div style="width:52px;"></div>
   </div>
-  <iframe src="about:blank" data-src="https://sunshineduponu.b-cdn.net/embed.html?url=https://music.youtube.com/?hl=en"></iframe>
+  <iframe src="about:blank" data-src="https://music.youtube.com/?hl=en"></iframe>
 </div>
 
 <div class="window" id="win-google">
@@ -911,7 +911,7 @@
     <span class="win-title">Discord</span>
     <div style="width:52px;"></div>
   </div>
-  <iframe src="about:blank" data-src="https://sunshineduponu.b-cdn.net/embed.html?url=https://discord.com"></iframe>
+  <iframe src="about:blank" data-src="https://discord.com/app"></iframe>
 </div>
 
 <div class="window" id="win-roblox">
@@ -924,7 +924,7 @@
     <span class="win-title">Roblox</span>
     <div style="width:52px;"></div>
   </div>
-  <iframe src="about:blank" data-src="https://sunshineduponu.b-cdn.net/embed.html?url=https://nowgg.fun/apps/a/19900/b.html"></iframe>
+  <iframe src="about:blank" data-src="https://nowgg.fun/apps/a/19900/b.html"></iframe>
 </div>
 
 <div class="window" id="win-geforce">
@@ -937,7 +937,7 @@
     <span class="win-title">GeForce Now</span>
     <div style="width:52px;"></div>
   </div>
-  <iframe src="about:blank" data-src="https://sunshineduponu.b-cdn.net/embed.html?url=https://play.geforcenow.com"></iframe>
+  <iframe src="about:blank" data-src="https://play.geforcenow.com"></iframe>
 </div>
 
 <div class="window" id="win-anime">
@@ -950,7 +950,7 @@
     <span class="win-title">Anime</span>
     <div style="width:52px;"></div>
   </div>
-  <iframe src="about:blank" data-src="https://sunshineduponu.b-cdn.net/embed.html?url=https://senshi.live"></iframe>
+  <iframe src="about:blank" data-src="https://senshi.live"></iframe>
 </div>
 
 <div class="window" id="win-blooket">
@@ -963,7 +963,7 @@
     <span class="win-title">Blooket</span>
     <div style="width:52px;"></div>
   </div>
-  <iframe src="about:blank" data-src="https://sunshineduponu.b-cdn.net/embed.html?url=https://blooketbot.schoolcheats.net"></iframe>
+  <iframe src="about:blank" data-src="https://blooketbot.schoolcheats.net"></iframe>
 </div>
 
 <div class="window" id="win-gta">
@@ -976,7 +976,7 @@
     <span class="win-title">GTA Vice City</span>
     <div style="width:52px;"></div>
   </div>
-  <iframe src="about:blank" data-src="https://sunshineduponu.b-cdn.net/embed.html?url=https://t9os.space/gtavc"></iframe>
+  <iframe src="about:blank" data-src="https://t9os.space/gtavc"></iframe>
 </div>
 
 <!-- VAST.AI -->
@@ -1032,11 +1032,12 @@
     </div>
     <input class="url-input" id="urlInput" type="text" placeholder="Enter URL or search... (e.g. google.com, youtube)" onkeydown="if(event.key==='Enter') navigate()">
     <select class="proxy-select" id="proxySelect" onchange="switchProxy()" title="Switch proxy service">
-      <option value="0">CDN Relay</option>
+      <option value="0">Direct</option>
       <option value="1">AllOrigins</option>
-      <option value="2">Direct</option>
+      <option value="2">CORS Proxy</option>
     </select>
     <button class="go-btn" onclick="navigate()">Go</button>
+    <button class="nav-btn" onclick="openInNewTab()" title="Open in new tab" style="font-size:12px;">&#8599;</button>
   </div>
   <div class="browser-shortcuts">
     <button class="shortcut-btn" onclick="loadUrl('https://www.google.com')">Google</button>
@@ -1051,7 +1052,7 @@
     <button class="shortcut-btn" onclick="loadUrl('https://nowgg.fun')">Now.gg</button>
   </div>
   <div class="browser-home" id="browserHome">
-    <h2>Sunshine Browser</h2>
+    <h2>Cole's Browser</h2>
     <p>Type a URL or search term above, or click a quick link to get started. Switch between proxy services if one is blocked.</p>
     <div class="home-grid">
       <div class="home-tile" onclick="loadUrl('https://www.google.com')"><span>&#128269;</span>Google</div>
@@ -1091,7 +1092,7 @@
       <div class="settings-row">
         <span class="settings-label">Disguise this tab as:</span>
         <select class="settings-select" id="tabCloak" onchange="applyCloak(this.value)">
-          <option value="default">Sunshine OS</option>
+          <option value="default">Cole's OS</option>
           <option value="gmail">Gmail</option>
           <option value="google">Google</option>
           <option value="schoology">Schoology</option>
@@ -1111,13 +1112,13 @@
       <div class="settings-row">
         <span class="settings-label">Default proxy:</span>
         <select class="settings-select" id="defaultProxy" onchange="document.getElementById('proxySelect').value=this.value; switchProxy();">
-          <option value="0">CDN Relay</option>
+          <option value="0">Direct</option>
           <option value="1">AllOrigins</option>
-          <option value="2">Direct (no proxy)</option>
+          <option value="2">CORS Proxy</option>
         </select>
       </div>
       <div class="proxy-note">
-        The built-in <strong>Browser</strong> uses proxy backends to bypass Lightspeed, GoGuardian, and other school filters. <strong>CDN Relay</strong> routes through a BunnyCDN embed page (best for most sites). <strong>AllOrigins</strong> is a CORS proxy fallback. If one is blocked, switch to another from the dropdown in the browser bar.
+        The browser loads sites directly by default. If a site is blocked or won't load in the iframe, switch to <strong>AllOrigins</strong> or <strong>CORS Proxy</strong> from the dropdown. You can also click <strong>"Open in New Tab"</strong> to open any URL in a fresh tab outside the iframe.
       </div>
     </div>
 
@@ -1170,6 +1171,13 @@ const openApps = new Set();
 function openApp(id) {
   if (id === 'settings') { openSettings(); return; }
   if (id === 'browser') { openBrowser(); return; }
+  if (id === 'vastai') {
+    const win = document.getElementById('win-vastai');
+    if (win) { win.classList.add('show'); openApps.add(id); }
+    const dot = document.getElementById('dot-' + id);
+    if (dot) dot.parentElement.classList.add('running');
+    return;
+  }
   const win = document.getElementById('win-' + id);
   if (!win) return;
   const iframe = win.querySelector('iframe');
@@ -1195,9 +1203,9 @@ function closeApp(id) {
 
 // ─── WEB PROXY BROWSER ──────────────────────────────────────────────────────
 const PROXIES = [
-  { name: 'CDN Relay',    fmt: url => 'https://sunshineduponu.b-cdn.net/embed.html?url=' + url },
-  { name: 'AllOrigins',   fmt: url => 'https://api.allorigins.win/raw?url=' + encodeURIComponent(url) },
   { name: 'Direct',       fmt: url => url },
+  { name: 'AllOrigins',   fmt: url => 'https://api.allorigins.win/raw?url=' + encodeURIComponent(url) },
+  { name: 'CORS Proxy',   fmt: url => 'https://corsproxy.io/?' + encodeURIComponent(url) },
 ];
 let currentProxy = 0;
 let lastUrl = '';
@@ -1275,6 +1283,7 @@ function browserHome() {
 function browserBack() { document.getElementById('browserFrame').contentWindow?.history.back(); }
 function browserForward() { document.getElementById('browserFrame').contentWindow?.history.forward(); }
 function browserRefresh() { if (lastUrl) loadUrl(lastUrl); }
+function openInNewTab() { if (lastUrl) window.open(lastUrl, '_blank'); }
 
 // ─── VAST.AI ────────────────────────────────────────────────────────────────
 const VAST_API = 'https://console.vast.ai/api/v0';
@@ -1568,7 +1577,7 @@ function closeLibrary() {
 
 // ─── SETTINGS ────────────────────────────────────────────────────────────────
 const cloaks = {
-  default:   { title: 'Sunshine OS',     icon: '' },
+  default:   { title: "Cole's OS",     icon: '' },
   gmail:     { title: 'Inbox (1) - Gmail', icon: 'https://ssl.gstatic.com/ui/v1/icons/mail/rfr/gmail.ico' },
   google:    { title: 'Google',           icon: 'https://www.google.com/favicon.ico' },
   schoology: { title: 'Home | Schoology', icon: 'https://asset-cdn.schoology.com/sites/all/themes/schoology_theme/favicon.ico' },
