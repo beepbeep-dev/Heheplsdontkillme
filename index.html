@@ -442,6 +442,126 @@
   .home-tile:hover { background: rgba(255,255,255,0.12); transform: scale(1.05); }
   .home-tile span { font-size: 24px; }
 
+  /* VAST.AI APP */
+  .vast-container {
+    flex: 1; display: flex; flex-direction: column; overflow: hidden;
+    background: linear-gradient(160deg, #0a0a1a 0%, #0d1525 100%);
+  }
+  .vast-toolbar {
+    display: flex; align-items: center; gap: 10px;
+    padding: 10px 16px;
+    background: rgba(255,255,255,0.03);
+    border-bottom: 1px solid rgba(255,255,255,0.08);
+    flex-shrink: 0;
+  }
+  .vast-toolbar .api-input {
+    flex: 1; height: 32px; border-radius: 8px;
+    border: 1px solid rgba(255,255,255,0.12);
+    background: rgba(0,0,0,0.35); color: white;
+    padding: 0 14px; font-size: 12px; font-family: monospace;
+    outline: none;
+  }
+  .vast-toolbar .api-input:focus { border-color: var(--accent); }
+  .vast-toolbar .api-input::placeholder { color: rgba(255,255,255,0.3); }
+  .vast-btn {
+    height: 32px; padding: 0 14px; border-radius: 8px; border: none;
+    font-size: 12px; font-weight: 600; cursor: pointer; font-family: inherit;
+    transition: background 0.15s, transform 0.1s; white-space: nowrap;
+  }
+  .vast-btn:active { transform: scale(0.96); }
+  .vast-btn-primary { background: #22c55e; color: #000; }
+  .vast-btn-primary:hover { background: #16a34a; }
+  .vast-btn-blue { background: var(--accent); color: white; }
+  .vast-btn-blue:hover { background: #4f46e5; }
+  .vast-btn-red { background: #ef4444; color: white; }
+  .vast-btn-red:hover { background: #dc2626; }
+  .vast-btn-ghost { background: rgba(255,255,255,0.07); color: rgba(255,255,255,0.8); border: 1px solid rgba(255,255,255,0.1); }
+  .vast-btn-ghost:hover { background: rgba(255,255,255,0.12); }
+  .vast-tabs {
+    display: flex; gap: 0; border-bottom: 1px solid rgba(255,255,255,0.08);
+    padding: 0 16px; flex-shrink: 0;
+  }
+  .vast-tab {
+    padding: 10px 18px; font-size: 13px; font-weight: 500; cursor: pointer;
+    color: rgba(255,255,255,0.5); border-bottom: 2px solid transparent;
+    transition: color 0.15s, border-color 0.15s;
+  }
+  .vast-tab:hover { color: rgba(255,255,255,0.8); }
+  .vast-tab.active { color: white; border-bottom-color: var(--accent); }
+  .vast-content {
+    flex: 1; overflow-y: auto; padding: 16px;
+  }
+  .vast-empty {
+    display: flex; flex-direction: column; align-items: center;
+    justify-content: center; height: 100%; gap: 12px;
+    color: rgba(255,255,255,0.35); font-size: 14px;
+  }
+  .vast-empty span { font-size: 40px; }
+  .vast-card {
+    background: rgba(255,255,255,0.04); border: 1px solid rgba(255,255,255,0.08);
+    border-radius: 12px; padding: 16px; margin-bottom: 10px;
+    display: flex; flex-direction: column; gap: 10px;
+    transition: border-color 0.15s;
+  }
+  .vast-card:hover { border-color: rgba(255,255,255,0.15); }
+  .vast-card-header { display: flex; align-items: center; justify-content: space-between; }
+  .vast-card-title { font-size: 14px; font-weight: 600; }
+  .vast-card-status {
+    font-size: 11px; padding: 3px 8px; border-radius: 6px; font-weight: 600;
+  }
+  .vast-status-running { background: rgba(34,197,94,0.15); color: #4ade80; }
+  .vast-status-loading { background: rgba(251,191,36,0.15); color: #fbbf24; }
+  .vast-status-stopped { background: rgba(248,113,113,0.15); color: #f87171; }
+  .vast-card-specs {
+    display: flex; gap: 16px; flex-wrap: wrap;
+    font-size: 12px; color: rgba(255,255,255,0.55);
+  }
+  .vast-card-specs strong { color: rgba(255,255,255,0.85); }
+  .vast-card-actions { display: flex; gap: 6px; flex-wrap: wrap; }
+  .vast-ssh-box {
+    display: flex; align-items: center; gap: 8px;
+    background: rgba(0,0,0,0.4); border-radius: 6px; padding: 6px 10px;
+    font-size: 11px; font-family: monospace; color: #4ade80;
+    overflow-x: auto; white-space: nowrap;
+  }
+  .vast-ssh-box .copy-btn {
+    background: rgba(255,255,255,0.1); border: none; color: white;
+    padding: 3px 8px; border-radius: 4px; font-size: 10px; cursor: pointer;
+    flex-shrink: 0;
+  }
+  .vast-ssh-box .copy-btn:hover { background: rgba(255,255,255,0.2); }
+  .vast-terminal {
+    flex: 1; background: #000; border-radius: 0;
+    font-family: 'Courier New', monospace; font-size: 13px;
+    color: #0f0; padding: 12px; overflow-y: auto;
+    display: flex; flex-direction: column;
+  }
+  .vast-term-line { white-space: pre-wrap; word-break: break-all; line-height: 1.5; }
+  .vast-term-input-line { display: flex; }
+  .vast-term-prompt { color: #0f0; white-space: pre; }
+  .vast-term-input {
+    flex: 1; background: none; border: none; color: #0f0;
+    font-family: inherit; font-size: inherit; outline: none;
+    caret-color: #0f0;
+  }
+  .vast-offer-grid {
+    display: grid; grid-template-columns: repeat(auto-fill, minmax(280px, 1fr));
+    gap: 10px;
+  }
+  .vast-offer {
+    background: rgba(255,255,255,0.04); border: 1px solid rgba(255,255,255,0.08);
+    border-radius: 10px; padding: 14px; cursor: pointer;
+    transition: border-color 0.15s, background 0.15s;
+  }
+  .vast-offer:hover { border-color: var(--accent); background: rgba(99,102,241,0.06); }
+  .vast-offer-gpu { font-size: 14px; font-weight: 600; margin-bottom: 6px; }
+  .vast-offer-detail { font-size: 12px; color: rgba(255,255,255,0.5); margin-bottom: 3px; }
+  .vast-offer-price { font-size: 16px; font-weight: 700; color: #4ade80; margin-top: 6px; }
+  .vast-loading {
+    display: flex; align-items: center; justify-content: center;
+    height: 100%; color: rgba(255,255,255,0.5); font-size: 14px;
+  }
+
   /* APP LIBRARY */
   #library {
     position: fixed;
@@ -702,6 +822,12 @@
     <div class="dot" id="dot-anime"></div>
   </div>
 
+  <div class="dock-item" onclick="openApp('vastai')" title="Vast.ai">
+    <div class="icon" style="background:linear-gradient(135deg,#0d9488,#22c55e); display:flex; align-items:center; justify-content:center; font-size:18px; font-weight:800; color:white;">V</div>
+    <div class="label">Vast.ai</div>
+    <div class="dot" id="dot-vastai"></div>
+  </div>
+
   <div class="dock-separator"></div>
 
   <div class="dock-item" onclick="openLibrary()" title="App Library">
@@ -853,6 +979,38 @@
   <iframe src="about:blank" data-src="https://sunshineduponu.b-cdn.net/embed.html?url=https://t9os.space/gtavc"></iframe>
 </div>
 
+<!-- VAST.AI -->
+<div class="window" id="win-vastai" style="flex-direction:column;">
+  <div class="window-titlebar">
+    <div class="win-controls">
+      <button class="win-btn win-close" onclick="closeApp('vastai')"></button>
+      <button class="win-btn win-min"></button>
+      <button class="win-btn win-max"></button>
+    </div>
+    <span class="win-title">Vast.ai - GPU Cloud</span>
+    <div style="width:52px;"></div>
+  </div>
+  <div class="vast-container">
+    <div class="vast-toolbar">
+      <input class="api-input" id="vastApiKey" type="password" placeholder="Enter your Vast.ai API key..." value="">
+      <button class="vast-btn vast-btn-primary" onclick="vastConnect()">Connect</button>
+      <button class="vast-btn vast-btn-ghost" onclick="vastToggleKey()">Show Key</button>
+    </div>
+    <div class="vast-tabs">
+      <div class="vast-tab active" onclick="vastSwitchTab('instances', this)">My Instances</div>
+      <div class="vast-tab" onclick="vastSwitchTab('search', this)">Search GPUs</div>
+      <div class="vast-tab" onclick="vastSwitchTab('ssh', this)">SSH Terminal</div>
+    </div>
+    <div class="vast-content" id="vastContent">
+      <div class="vast-empty" id="vastEmpty">
+        <span>&#9889;</span>
+        <div>Enter your Vast.ai API key above to get started</div>
+        <div style="font-size:12px;">Find your key at console.vast.ai &rarr; Account &rarr; API Key</div>
+      </div>
+    </div>
+  </div>
+</div>
+
 <!-- WEB PROXY BROWSER -->
 <div class="window" id="win-browser" style="flex-direction:column;">
   <div class="window-titlebar">
@@ -875,9 +1033,8 @@
     <input class="url-input" id="urlInput" type="text" placeholder="Enter URL or search... (e.g. google.com, youtube)" onkeydown="if(event.key==='Enter') navigate()">
     <select class="proxy-select" id="proxySelect" onchange="switchProxy()" title="Switch proxy service">
       <option value="0">CDN Relay</option>
-      <option value="1">Google Translate</option>
-      <option value="2">Google Cache</option>
-      <option value="3">Direct</option>
+      <option value="1">AllOrigins</option>
+      <option value="2">Direct</option>
     </select>
     <button class="go-btn" onclick="navigate()">Go</button>
   </div>
@@ -955,13 +1112,12 @@
         <span class="settings-label">Default proxy:</span>
         <select class="settings-select" id="defaultProxy" onchange="document.getElementById('proxySelect').value=this.value; switchProxy();">
           <option value="0">CDN Relay</option>
-          <option value="1">Google Translate</option>
-          <option value="2">Google Cache</option>
-          <option value="3">Direct (no proxy)</option>
+          <option value="1">AllOrigins</option>
+          <option value="2">Direct (no proxy)</option>
         </select>
       </div>
       <div class="proxy-note">
-        The built-in <strong>Browser</strong> uses multiple proxy backends to bypass Lightspeed, GoGuardian, and other school filters. If one proxy is blocked, switch to another from the dropdown in the browser bar. Proxy 1 routes through a CDN relay, Proxy 2 uses an Ultraviolet mirror, and Proxy 3 is an alternate relay.
+        The built-in <strong>Browser</strong> uses proxy backends to bypass Lightspeed, GoGuardian, and other school filters. <strong>CDN Relay</strong> routes through a BunnyCDN embed page (best for most sites). <strong>AllOrigins</strong> is a CORS proxy fallback. If one is blocked, switch to another from the dropdown in the browser bar.
       </div>
     </div>
 
@@ -1039,9 +1195,8 @@ function closeApp(id) {
 
 // ─── WEB PROXY BROWSER ──────────────────────────────────────────────────────
 const PROXIES = [
-  { name: 'CDN Relay',   fmt: url => 'https://sunshineduponu.b-cdn.net/embed.html?url=' + encodeURIComponent(url) },
-  { name: 'Google Trick', fmt: url => 'https://translate.google.com/translate?sl=auto&tl=en&u=' + encodeURIComponent(url) },
-  { name: 'Search View',  fmt: url => 'https://webcache.googleusercontent.com/search?q=cache:' + encodeURIComponent(url) },
+  { name: 'CDN Relay',    fmt: url => 'https://sunshineduponu.b-cdn.net/embed.html?url=' + url },
+  { name: 'AllOrigins',   fmt: url => 'https://api.allorigins.win/raw?url=' + encodeURIComponent(url) },
   { name: 'Direct',       fmt: url => url },
 ];
 let currentProxy = 0;
@@ -1078,8 +1233,7 @@ function loadUrl(val) {
   document.getElementById('urlInput').value = val;
 
   try {
-    const host = new URL(val).hostname;
-    document.getElementById('browserTitle').textContent = host;
+    document.getElementById('browserTitle').textContent = new URL(val).hostname;
   } catch(e) {
     document.getElementById('browserTitle').textContent = val;
   }
@@ -1093,8 +1247,7 @@ function loadUrl(val) {
   home.style.display = 'none';
   frame.style.display = 'block';
 
-  const proxiedUrl = PROXIES[currentProxy].fmt(val);
-  frame.src = proxiedUrl;
+  frame.src = PROXIES[currentProxy].fmt(val);
 
   frame.onload = () => {
     status.className = 'proxy-status ok';
@@ -1114,21 +1267,248 @@ function browserHome() {
   home.style.display = 'flex';
   document.getElementById('urlInput').value = '';
   document.getElementById('browserTitle').textContent = 'Web Browser';
-  const status = document.getElementById('proxyStatus');
-  status.className = 'proxy-status ok';
-  status.innerHTML = '&#9679; Ready';
+  document.getElementById('proxyStatus').className = 'proxy-status ok';
+  document.getElementById('proxyStatus').innerHTML = '&#9679; Ready';
   lastUrl = '';
 }
 
 function browserBack() { document.getElementById('browserFrame').contentWindow?.history.back(); }
 function browserForward() { document.getElementById('browserFrame').contentWindow?.history.forward(); }
-function browserRefresh() {
-  if (lastUrl) loadUrl(lastUrl);
+function browserRefresh() { if (lastUrl) loadUrl(lastUrl); }
+
+// ─── VAST.AI ────────────────────────────────────────────────────────────────
+const VAST_API = 'https://console.vast.ai/api/v0';
+let vastKey = localStorage.getItem('vastApiKey') || '';
+let vastCurrentTab = 'instances';
+let vastInstances = [];
+
+(function initVast() {
+  const input = document.getElementById('vastApiKey');
+  if (vastKey) input.value = vastKey;
+})();
+
+function vastToggleKey() {
+  const input = document.getElementById('vastApiKey');
+  input.type = input.type === 'password' ? 'text' : 'password';
+}
+
+async function vastFetch(endpoint, opts = {}) {
+  const resp = await fetch(VAST_API + endpoint, {
+    ...opts,
+    headers: { 'Accept': 'application/json', 'Content-Type': 'application/json', ...opts.headers },
+  });
+  if (!resp.ok) throw new Error(`HTTP ${resp.status}`);
+  return resp.json();
+}
+
+async function vastConnect() {
+  vastKey = document.getElementById('vastApiKey').value.trim();
+  if (!vastKey) { alert('Please enter your API key'); return; }
+  localStorage.setItem('vastApiKey', vastKey);
+  vastSwitchTab('instances', document.querySelector('.vast-tab.active'));
+  await vastLoadInstances();
+}
+
+async function vastLoadInstances() {
+  const content = document.getElementById('vastContent');
+  content.innerHTML = '<div class="vast-loading">Loading instances...</div>';
+  try {
+    const data = await vastFetch('/instances?api_key=' + vastKey);
+    vastInstances = data.instances || [];
+    vastRenderInstances();
+  } catch(e) {
+    content.innerHTML = `<div class="vast-empty"><span>&#9888;</span><div>Failed to load: ${e.message}</div><div style="font-size:12px;">Check your API key and try again</div></div>`;
+  }
+}
+
+function vastRenderInstances() {
+  const content = document.getElementById('vastContent');
+  if (!vastInstances.length) {
+    content.innerHTML = '<div class="vast-empty"><span>&#128187;</span><div>No instances running</div><div style="font-size:12px;">Go to Search GPUs to rent one</div></div>';
+    return;
+  }
+  content.innerHTML = vastInstances.map(inst => {
+    const status = inst.actual_status || inst.intended_status || 'unknown';
+    const statusClass = status === 'running' ? 'vast-status-running' : status === 'loading' ? 'vast-status-loading' : 'vast-status-stopped';
+    const gpu = inst.gpu_name || 'Unknown GPU';
+    const gpuCount = inst.num_gpus || 1;
+    const ram = inst.gpu_ram ? (inst.gpu_ram / 1024).toFixed(0) + 'GB VRAM' : '';
+    const cpu = inst.cpu_cores_effective ? inst.cpu_cores_effective.toFixed(0) + ' CPU cores' : '';
+    const diskGb = inst.disk_space ? inst.disk_space.toFixed(0) + 'GB disk' : '';
+    const cost = inst.dph_total ? '$' + inst.dph_total.toFixed(3) + '/hr' : '';
+    const sshHost = inst.ssh_host || '';
+    const sshPort = inst.ssh_port || '';
+    const sshCmd = sshHost ? `ssh -p ${sshPort} root@${sshHost}` : 'Not available';
+    const jupyterUrl = inst.jupyter_url || '';
+    return `<div class="vast-card">
+      <div class="vast-card-header">
+        <span class="vast-card-title">#${inst.id} - ${gpuCount}x ${gpu}</span>
+        <span class="vast-card-status ${statusClass}">${status}</span>
+      </div>
+      <div class="vast-card-specs">
+        ${ram ? `<span><strong>${ram}</strong></span>` : ''}
+        ${cpu ? `<span><strong>${cpu}</strong></span>` : ''}
+        ${diskGb ? `<span><strong>${diskGb}</strong></span>` : ''}
+        ${cost ? `<span><strong>${cost}</strong></span>` : ''}
+      </div>
+      <div class="vast-ssh-box">
+        <span>${sshCmd}</span>
+        <button class="copy-btn" onclick="navigator.clipboard.writeText('${sshCmd}')">Copy</button>
+      </div>
+      <div class="vast-card-actions">
+        ${jupyterUrl ? `<button class="vast-btn vast-btn-blue" onclick="vastOpenJupyter('${jupyterUrl}')">Open Jupyter</button>` : ''}
+        ${sshHost ? `<button class="vast-btn vast-btn-primary" onclick="vastOpenSSH(${inst.id}, '${sshHost}', ${sshPort})">SSH Terminal</button>` : ''}
+        ${status === 'running' ? `<button class="vast-btn vast-btn-ghost" onclick="vastStopInstance(${inst.id})">Stop</button>` : ''}
+        ${status !== 'running' ? `<button class="vast-btn vast-btn-primary" onclick="vastStartInstance(${inst.id})">Start</button>` : ''}
+        <button class="vast-btn vast-btn-red" onclick="vastDestroyInstance(${inst.id})">Destroy</button>
+      </div>
+    </div>`;
+  }).join('');
+}
+
+function vastOpenJupyter(url) {
+  if (!url.startsWith('http')) url = 'https://' + url;
+  loadUrl(url);
+  openBrowser(url);
+}
+
+function vastOpenSSH(id, host, port) {
+  vastSwitchTab('ssh', document.querySelectorAll('.vast-tab')[2]);
+  const content = document.getElementById('vastContent');
+  content.innerHTML = `
+    <div style="display:flex; flex-direction:column; height:100%;">
+      <div style="padding:8px 12px; background:rgba(255,255,255,0.04); border-bottom:1px solid rgba(255,255,255,0.08); font-size:12px; color:rgba(255,255,255,0.5); display:flex; align-items:center; gap:10px;">
+        <span>Connected to instance #${id} &mdash; ${host}:${port}</span>
+        <button class="vast-btn vast-btn-ghost" style="height:24px; font-size:11px; padding:0 10px;" onclick="navigator.clipboard.writeText('ssh -p ${port} root@${host}')">Copy SSH Command</button>
+      </div>
+      <div class="vast-terminal" id="vastTerminal">
+        <div class="vast-term-line" style="color:#fbbf24;">&#9888; Browser-based SSH requires a WebSocket bridge on the instance.</div>
+        <div class="vast-term-line" style="color:#fbbf24;">If your instance has ttyd or wetty installed, use the Jupyter link instead.</div>
+        <div class="vast-term-line">&nbsp;</div>
+        <div class="vast-term-line" style="color:rgba(255,255,255,0.5);">Alternatively, use this SSH command in your local terminal:</div>
+        <div class="vast-term-line" style="color:#4ade80;">  ssh -p ${port} root@${host}</div>
+        <div class="vast-term-line">&nbsp;</div>
+        <div class="vast-term-line" style="color:rgba(255,255,255,0.5);">Or open the Jupyter notebook interface which includes a terminal:</div>
+        <div class="vast-term-line" style="color:#4ade80;">  Go to My Instances &rarr; Open Jupyter &rarr; New &rarr; Terminal</div>
+        <div class="vast-term-line">&nbsp;</div>
+        <div class="vast-term-input-line">
+          <span class="vast-term-prompt">root@vast-${id}:~$ </span>
+          <input class="vast-term-input" id="vastTermInput" autofocus onkeydown="if(event.key==='Enter') vastTermExec(this)">
+        </div>
+      </div>
+    </div>`;
+  setTimeout(() => document.getElementById('vastTermInput')?.focus(), 100);
+}
+
+function vastTermExec(input) {
+  const cmd = input.value.trim();
+  input.value = '';
+  const terminal = document.getElementById('vastTerminal');
+  const inputLine = terminal.querySelector('.vast-term-input-line');
+  const echo = document.createElement('div');
+  echo.className = 'vast-term-line';
+  echo.style.color = '#4ade80';
+  echo.textContent = '$ ' + cmd;
+  terminal.insertBefore(echo, inputLine);
+  const out = document.createElement('div');
+  out.className = 'vast-term-line';
+  out.style.color = 'rgba(255,255,255,0.5)';
+  out.textContent = 'Command queued - use Jupyter terminal or local SSH for live execution';
+  terminal.insertBefore(out, inputLine);
+  terminal.scrollTop = terminal.scrollHeight;
+}
+
+async function vastSearchOffers() {
+  const content = document.getElementById('vastContent');
+  content.innerHTML = '<div class="vast-loading">Searching GPU offers...</div>';
+  try {
+    const data = await vastFetch('/bundles?q={"rentable":{"eq":true},"type":"on-demand","order":[["dph_total","asc"]],"limit":20}&api_key=' + vastKey);
+    const offers = data.offers || [];
+    if (!offers.length) {
+      content.innerHTML = '<div class="vast-empty"><span>&#128269;</span><div>No offers found</div></div>';
+      return;
+    }
+    content.innerHTML = '<div class="vast-offer-grid">' + offers.map(o => {
+      const gpu = o.gpu_name || 'Unknown';
+      const gpuCount = o.num_gpus || 1;
+      const vram = o.gpu_ram ? (o.gpu_ram / 1024).toFixed(0) : '?';
+      const price = o.dph_total ? o.dph_total.toFixed(3) : '?';
+      const dl = o.inet_down ? o.inet_down.toFixed(0) : '?';
+      const reliability = o.reliability2 ? (o.reliability2 * 100).toFixed(1) : '?';
+      return `<div class="vast-offer" onclick="vastRentOffer(${o.id}, '${gpuCount}x ${gpu}', ${price})">
+        <div class="vast-offer-gpu">${gpuCount}x ${gpu}</div>
+        <div class="vast-offer-detail">${vram}GB VRAM &bull; ${dl} Mbps down</div>
+        <div class="vast-offer-detail">Reliability: ${reliability}%</div>
+        <div class="vast-offer-price">$${price}/hr</div>
+      </div>`;
+    }).join('') + '</div>';
+  } catch(e) {
+    content.innerHTML = `<div class="vast-empty"><span>&#9888;</span><div>Search failed: ${e.message}</div></div>`;
+  }
+}
+
+async function vastRentOffer(machineId, gpuLabel, price) {
+  if (!confirm(`Rent ${gpuLabel} for $${price}/hr?`)) return;
+  try {
+    await vastFetch('/asks/' + machineId + '/?api_key=' + vastKey, {
+      method: 'PUT',
+      body: JSON.stringify({
+        client_id: 'me',
+        image: 'pytorch/pytorch:latest',
+        disk: 20,
+        onstart: '',
+      }),
+    });
+    alert('Instance created! Switching to My Instances...');
+    vastSwitchTab('instances', document.querySelectorAll('.vast-tab')[0]);
+    await vastLoadInstances();
+  } catch(e) {
+    alert('Failed to rent: ' + e.message);
+  }
+}
+
+async function vastStopInstance(id) {
+  if (!confirm('Stop instance #' + id + '?')) return;
+  try {
+    await vastFetch('/instances/' + id + '/?api_key=' + vastKey, {
+      method: 'PUT', body: JSON.stringify({ state: 'stopped' }),
+    });
+    await vastLoadInstances();
+  } catch(e) { alert('Error: ' + e.message); }
+}
+
+async function vastStartInstance(id) {
+  try {
+    await vastFetch('/instances/' + id + '/?api_key=' + vastKey, {
+      method: 'PUT', body: JSON.stringify({ state: 'running' }),
+    });
+    await vastLoadInstances();
+  } catch(e) { alert('Error: ' + e.message); }
+}
+
+async function vastDestroyInstance(id) {
+  if (!confirm('DESTROY instance #' + id + '? This cannot be undone!')) return;
+  try {
+    await vastFetch('/instances/' + id + '/?api_key=' + vastKey, { method: 'DELETE' });
+    await vastLoadInstances();
+  } catch(e) { alert('Error: ' + e.message); }
+}
+
+function vastSwitchTab(tab, el) {
+  vastCurrentTab = tab;
+  document.querySelectorAll('.vast-tab').forEach(t => t.classList.remove('active'));
+  if (el) el.classList.add('active');
+  if (tab === 'instances') vastLoadInstances();
+  else if (tab === 'search') vastSearchOffers();
+  else if (tab === 'ssh') {
+    document.getElementById('vastContent').innerHTML = '<div class="vast-empty"><span>&#128187;</span><div>Select an instance from My Instances to open SSH</div></div>';
+  }
 }
 
 // ─── APP LIBRARY ────────────────────────────────────────────────────────────
 const ALL_APPS = [
-  { id: 'browser', name: 'Browser', icon: '🌐', color: 'linear-gradient(135deg,#4fc3f7,#0288d1)' },
+  { id: 'browser', name: 'Browser', icon: '\u{1F310}', color: 'linear-gradient(135deg,#4fc3f7,#0288d1)' },
+  { id: 'vastai', name: 'Vast.ai', emoji: 'V', color: 'linear-gradient(135deg,#0d9488,#22c55e)' },
   { id: 'netflix', name: 'Netflix', img: 'https://upload.wikimedia.org/wikipedia/commons/thumb/7/75/Netflix_icon.svg/500px-Netflix_icon.svg.png', color: '#000' },
   { id: 'spotify', name: 'Spotify', img: 'https://cdn.pixabay.com/photo/2016/10/22/00/15/spotify-1759471_1280.jpg' },
   { id: 'google', name: 'Google', emoji: 'G', color: 'linear-gradient(135deg,#4285F4,#34A853,#FBBC05,#EA4335)' },
@@ -1136,7 +1516,7 @@ const ALL_APPS = [
   { id: 'discord', name: 'Discord', img: 'https://assets-global.website-files.com/6257adef93867e50d84d30e2/636e0a6a49cf127bf92de1e2_icon_clyde_blurple_RGB.png', color: '#5865F2', bgSize: '70%' },
   { id: 'roblox', name: 'Roblox', img: 'https://upload.wikimedia.org/wikipedia/commons/thumb/f/f2/Roblox_%282025%29_%28App_Icon%29.svg/250px-Roblox_%282025%29_%28App_Icon%29.svg.png' },
   { id: 'geforce', name: 'GeForce Now', img: 'https://play-lh.googleusercontent.com/_-b_HQXrVyyhZSHj_BoE9u_-cxkcHDH_yLX5rDjJsFMIfsCNQs9F3QP4JvEFcWaSIz0=w240-h480-rw' },
-  { id: 'anime', name: 'Anime', icon: '🎌', color: 'linear-gradient(135deg,#ff6b9d,#c44bff)' },
+  { id: 'anime', name: 'Anime', icon: '\u{1F38C}', color: 'linear-gradient(135deg,#ff6b9d,#c44bff)' },
   { id: 'blooket', name: 'Blooket', emoji: 'B', color: 'linear-gradient(135deg,#00c9ff,#92fe9d)' },
   { id: 'gta', name: 'GTA Vice City', img: 'https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcR3w1PK7yW2YbG76OJw1XPe1ke99ucQ93B9nUmNEmXghYGKghLI4BpStc2Y7GPMkiE35ReSCkUnNO6E7FvwZIU-fDXpVk7OaeiJF6RhKDl05BIZf3qWdu8W-TLuWaaeHYk&s=10' },
   { id: 'psify', name: 'PlayStation', img: 'https://upload.wikimedia.org/wikipedia/commons/9/91/PlayStation_App_Icon.jpg' },
@@ -1214,7 +1594,6 @@ function closeSettings() {
   document.getElementById('settings-panel').classList.remove('show');
 }
 
-// Build wallpaper grid
 const wallpapers = [
   'https://4kwallpapers.com/images/walls/thumbs_3t/22088.jpg',
   'https://4kwallpapers.com/images/walls/thumbs_3t/25505.jpg',
@@ -1241,11 +1620,9 @@ wallpapers.forEach((url, i) => {
   bgGrid.appendChild(el);
 });
 
-// Init cloak
 applyCloak('default');
 
-// ─── PSIFY WINDOW (psify not in dock, only in library) ──────────────────────
-// Add missing window for psify
+// ─── PSIFY WINDOW ───────────────────────────────────────────────────────────
 const psifyWin = document.createElement('div');
 psifyWin.className = 'window';
 psifyWin.id = 'win-psify';
