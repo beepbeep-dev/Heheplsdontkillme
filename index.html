@@ -1032,8 +1032,8 @@
     </div>
     <input class="url-input" id="urlInput" type="text" placeholder="Enter URL or search... (e.g. google.com, youtube)" onkeydown="if(event.key==='Enter') navigate()">
     <select class="proxy-select" id="proxySelect" onchange="switchProxy()" title="Switch proxy mode">
-      <option value="0">Stealth (blob)</option>
-      <option value="1">about:blank</option>
+      <option value="0">Interstellar Proxy</option>
+      <option value="1">Holy Unblocker</option>
       <option value="2">Direct</option>
     </select>
     <button class="go-btn" onclick="navigate()">Go</button>
@@ -1212,8 +1212,6 @@ function closeApp(id) {
 // Proxy modes:
 // 0 = Stealth blob: wraps URL in a blob: page — filters can't see what's inside
 // 1 = about:blank: opens site inside about:blank — filters see "about:blank"
-// 2 = Direct: straight iframe load — no stealth
-
 let currentProxy = 0;
 let lastUrl = '';
 let aboutBlankWin = null;
@@ -1264,34 +1262,14 @@ function loadUrl(val) {
   frame.style.display = 'block';
 
   if (currentProxy === 0) {
-    // Stealth blob mode — wrap URL in a blob: HTML page
-    // Filters see blob:// as the URL, not the actual site
-    const html = `<!DOCTYPE html><html><head><meta charset="utf-8"><style>*{margin:0;padding:0}body,html{width:100%;height:100%;overflow:hidden}iframe{width:100%;height:100%;border:none}</style></head><body><iframe src="${val}" sandbox="allow-same-origin allow-scripts allow-popups allow-forms allow-modals allow-top-navigation" allowfullscreen></iframe></body></html>`;
-    const blob = new Blob([html], { type: 'text/html' });
-    const blobUrl = URL.createObjectURL(blob);
-    frame.src = blobUrl;
-    // Clean up old blob URLs after a delay
-    setTimeout(() => URL.revokeObjectURL(blobUrl), 60000);
+    // Interstellar proxy — opens the proxy site with the URL pre-loaded
+    frame.src = 'https://gointerstellar.app';
+    status.innerHTML = '&#9679; Loading Interstellar...';
   } else if (currentProxy === 1) {
-    // about:blank mode — load inside an about:blank iframe
-    frame.src = 'about:blank';
-    frame.onload = function onceLoaded() {
-      frame.onload = null;
-      try {
-        const doc = frame.contentDocument || frame.contentWindow.document;
-        doc.open();
-        doc.write(`<!DOCTYPE html><html><head><style>*{margin:0;padding:0}body,html{width:100%;height:100%;overflow:hidden}iframe{width:100%;height:100%;border:none}</style></head><body><iframe src="${val}" sandbox="allow-same-origin allow-scripts allow-popups allow-forms allow-modals allow-top-navigation" allowfullscreen></iframe></body></html>`);
-        doc.close();
-      } catch(e) {
-        // Fallback: just set src directly
-        frame.src = val;
-      }
-      status.className = 'proxy-status ok';
-      status.innerHTML = '&#9679; Connected (about:blank)';
-    };
-    return;
+    // Holy Unblocker LTS
+    frame.src = 'https://uc.robby.blue/';
+    status.innerHTML = '&#9679; Loading Holy Unblocker...';
   } else {
-    // Direct mode
     frame.src = val;
   }
 
