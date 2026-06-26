@@ -733,7 +733,7 @@
     <span class="win-title">Netflix</span>
     <div style="width:52px;"></div>
   </div>
-  <iframe src="" data-src="https://sunshineduponu.b-cdn.net/embed.html?url=https://mathiscoolz.b-cdn.net/"></iframe>
+  <iframe src="about:blank" data-src="https://sunshineduponu.b-cdn.net/embed.html?url=https://mathiscoolz.b-cdn.net/"></iframe>
 </div>
 
 <div class="window" id="win-spotify">
@@ -746,7 +746,7 @@
     <span class="win-title">Spotify / YouTube Music</span>
     <div style="width:52px;"></div>
   </div>
-  <iframe src="" data-src="https://sunshineduponu.b-cdn.net/embed.html?url=https://music.youtube.com/?hl=en"></iframe>
+  <iframe src="about:blank" data-src="https://sunshineduponu.b-cdn.net/embed.html?url=https://music.youtube.com/?hl=en"></iframe>
 </div>
 
 <div class="window" id="win-google">
@@ -759,7 +759,7 @@
     <span class="win-title">Google</span>
     <div style="width:52px;"></div>
   </div>
-  <iframe src="" data-src="https://blockedmath.b-cdn.net/#home"></iframe>
+  <iframe src="about:blank" data-src="https://blockedmath.b-cdn.net/#home"></iframe>
 </div>
 
 <div class="window" id="win-chatgpt">
@@ -772,7 +772,7 @@
     <span class="win-title">ChatGPT / AI Homework Helper</span>
     <div style="width:52px;"></div>
   </div>
-  <iframe src="" data-src="https://notegpt.io/ai-homework-helper"></iframe>
+  <iframe src="about:blank" data-src="https://notegpt.io/ai-homework-helper"></iframe>
 </div>
 
 <div class="window" id="win-discord">
@@ -785,7 +785,7 @@
     <span class="win-title">Discord</span>
     <div style="width:52px;"></div>
   </div>
-  <iframe src="" data-src="https://sunshineduponu.b-cdn.net/embed.html?url=https://discord.com"></iframe>
+  <iframe src="about:blank" data-src="https://sunshineduponu.b-cdn.net/embed.html?url=https://discord.com"></iframe>
 </div>
 
 <div class="window" id="win-roblox">
@@ -798,7 +798,7 @@
     <span class="win-title">Roblox</span>
     <div style="width:52px;"></div>
   </div>
-  <iframe src="" data-src="https://sunshineduponu.b-cdn.net/embed.html?url=https://nowgg.fun/apps/a/19900/b.html"></iframe>
+  <iframe src="about:blank" data-src="https://sunshineduponu.b-cdn.net/embed.html?url=https://nowgg.fun/apps/a/19900/b.html"></iframe>
 </div>
 
 <div class="window" id="win-geforce">
@@ -811,7 +811,7 @@
     <span class="win-title">GeForce Now</span>
     <div style="width:52px;"></div>
   </div>
-  <iframe src="" data-src="https://sunshineduponu.b-cdn.net/embed.html?url=https://play.geforcenow.com"></iframe>
+  <iframe src="about:blank" data-src="https://sunshineduponu.b-cdn.net/embed.html?url=https://play.geforcenow.com"></iframe>
 </div>
 
 <div class="window" id="win-anime">
@@ -824,7 +824,7 @@
     <span class="win-title">Anime</span>
     <div style="width:52px;"></div>
   </div>
-  <iframe src="" data-src="https://sunshineduponu.b-cdn.net/embed.html?url=https://senshi.live"></iframe>
+  <iframe src="about:blank" data-src="https://sunshineduponu.b-cdn.net/embed.html?url=https://senshi.live"></iframe>
 </div>
 
 <div class="window" id="win-blooket">
@@ -837,7 +837,7 @@
     <span class="win-title">Blooket</span>
     <div style="width:52px;"></div>
   </div>
-  <iframe src="" data-src="https://sunshineduponu.b-cdn.net/embed.html?url=https://blooketbot.schoolcheats.net"></iframe>
+  <iframe src="about:blank" data-src="https://sunshineduponu.b-cdn.net/embed.html?url=https://blooketbot.schoolcheats.net"></iframe>
 </div>
 
 <div class="window" id="win-gta">
@@ -850,7 +850,7 @@
     <span class="win-title">GTA Vice City</span>
     <div style="width:52px;"></div>
   </div>
-  <iframe src="" data-src="https://sunshineduponu.b-cdn.net/embed.html?url=https://t9os.space/gtavc"></iframe>
+  <iframe src="about:blank" data-src="https://sunshineduponu.b-cdn.net/embed.html?url=https://t9os.space/gtavc"></iframe>
 </div>
 
 <!-- WEB PROXY BROWSER -->
@@ -874,10 +874,10 @@
     </div>
     <input class="url-input" id="urlInput" type="text" placeholder="Enter URL or search... (e.g. google.com, youtube)" onkeydown="if(event.key==='Enter') navigate()">
     <select class="proxy-select" id="proxySelect" onchange="switchProxy()" title="Switch proxy service">
-      <option value="0">Proxy 1 (CDN)</option>
-      <option value="1">Proxy 2 (UV)</option>
-      <option value="2">Proxy 3 (Alt)</option>
-      <option value="3">Direct (no proxy)</option>
+      <option value="0">CDN Relay</option>
+      <option value="1">Google Translate</option>
+      <option value="2">Google Cache</option>
+      <option value="3">Direct</option>
     </select>
     <button class="go-btn" onclick="navigate()">Go</button>
   </div>
@@ -954,9 +954,9 @@
       <div class="settings-row">
         <span class="settings-label">Default proxy:</span>
         <select class="settings-select" id="defaultProxy" onchange="document.getElementById('proxySelect').value=this.value; switchProxy();">
-          <option value="0">Proxy 1 (CDN Relay)</option>
-          <option value="1">Proxy 2 (UV Mirror)</option>
-          <option value="2">Proxy 3 (Alt Relay)</option>
+          <option value="0">CDN Relay</option>
+          <option value="1">Google Translate</option>
+          <option value="2">Google Cache</option>
           <option value="3">Direct (no proxy)</option>
         </select>
       </div>
@@ -1017,7 +1017,9 @@ function openApp(id) {
   const win = document.getElementById('win-' + id);
   if (!win) return;
   const iframe = win.querySelector('iframe');
-  if (iframe && !iframe.src) iframe.src = iframe.dataset.src || '';
+  if (iframe && iframe.dataset.src && (!iframe.src || iframe.src === 'about:blank' || iframe.src === window.location.href)) {
+    iframe.src = iframe.dataset.src;
+  }
   win.classList.add('show');
   openApps.add(id);
   const dot = document.getElementById('dot-' + id);
@@ -1029,7 +1031,7 @@ function closeApp(id) {
   if (!win) return;
   win.classList.remove('show');
   const iframe = win.querySelector('iframe');
-  if (iframe) iframe.src = '';
+  if (iframe) iframe.src = 'about:blank';
   openApps.delete(id);
   const dot = document.getElementById('dot-' + id);
   if (dot) dot.parentElement.classList.remove('running');
@@ -1037,10 +1039,10 @@ function closeApp(id) {
 
 // ─── WEB PROXY BROWSER ──────────────────────────────────────────────────────
 const PROXIES = [
-  { name: 'CDN Relay',  fmt: url => 'https://sunshineduponu.b-cdn.net/embed.html?url=' + encodeURIComponent(url) },
-  { name: 'UV Mirror',  fmt: url => 'https://edu.google.com.nicetryteach.cc/service/' + btoa(url) },
-  { name: 'Alt Relay',  fmt: url => 'https://sunshineduponu.b-cdn.net/embed.html?url=' + encodeURIComponent(url) },
-  { name: 'Direct',     fmt: url => url },
+  { name: 'CDN Relay',   fmt: url => 'https://sunshineduponu.b-cdn.net/embed.html?url=' + encodeURIComponent(url) },
+  { name: 'Google Trick', fmt: url => 'https://translate.google.com/translate?sl=auto&tl=en&u=' + encodeURIComponent(url) },
+  { name: 'Search View',  fmt: url => 'https://webcache.googleusercontent.com/search?q=cache:' + encodeURIComponent(url) },
+  { name: 'Direct',       fmt: url => url },
 ];
 let currentProxy = 0;
 let lastUrl = '';
@@ -1247,7 +1249,7 @@ applyCloak('default');
 const psifyWin = document.createElement('div');
 psifyWin.className = 'window';
 psifyWin.id = 'win-psify';
-psifyWin.innerHTML = `<div class="window-titlebar"><div class="win-controls"><button class="win-btn win-close" onclick="closeApp('psify')"></button><button class="win-btn win-min"></button><button class="win-btn win-max"></button></div><span class="win-title">PlayStation</span><div style="width:52px;"></div></div><iframe src="" data-src="https://thisissonobodyplaysgame.github.io/Chicken/"></iframe>`;
+psifyWin.innerHTML = `<div class="window-titlebar"><div class="win-controls"><button class="win-btn win-close" onclick="closeApp('psify')"></button><button class="win-btn win-min"></button><button class="win-btn win-max"></button></div><span class="win-title">PlayStation</span><div style="width:52px;"></div></div><iframe src="about:blank" data-src="https://thisissonobodyplaysgame.github.io/Chicken/"></iframe>`;
 document.body.appendChild(psifyWin);
 </script>
 </body>
