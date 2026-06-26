@@ -1031,10 +1031,10 @@
       <button class="nav-btn" onclick="browserHome()" title="Home">&#8962;</button>
     </div>
     <input class="url-input" id="urlInput" type="text" placeholder="Enter URL or search... (e.g. google.com, youtube)" onkeydown="if(event.key==='Enter') navigate()">
-    <select class="proxy-select" id="proxySelect" onchange="switchProxy()" title="Switch proxy service">
-      <option value="0">Direct</option>
-      <option value="1">AllOrigins</option>
-      <option value="2">CORS Proxy</option>
+    <select class="proxy-select" id="proxySelect" onchange="switchProxy()" title="Switch proxy mode">
+      <option value="0">Stealth (blob)</option>
+      <option value="1">about:blank</option>
+      <option value="2">Direct</option>
     </select>
     <button class="go-btn" onclick="navigate()">Go</button>
     <button class="nav-btn" onclick="openInNewTab()" title="Open in new tab" style="font-size:12px;">&#8599;</button>
@@ -1112,13 +1112,16 @@
       <div class="settings-row">
         <span class="settings-label">Default proxy:</span>
         <select class="settings-select" id="defaultProxy" onchange="document.getElementById('proxySelect').value=this.value; switchProxy();">
-          <option value="0">Direct</option>
-          <option value="1">AllOrigins</option>
-          <option value="2">CORS Proxy</option>
+          <option value="0">Stealth (blob)</option>
+          <option value="1">about:blank</option>
+          <option value="2">Direct</option>
         </select>
       </div>
       <div class="proxy-note">
-        The browser loads sites directly by default. If a site is blocked or won't load in the iframe, switch to <strong>AllOrigins</strong> or <strong>CORS Proxy</strong> from the dropdown. You can also click <strong>"Open in New Tab"</strong> to open any URL in a fresh tab outside the iframe.
+        <strong>Stealth (blob)</strong> — creates a blob: URL that wraps the site in an invisible layer. Most school filters (Lightspeed, GoGuardian, Securly) can't inspect blob: URLs, so the site loads undetected. This is the best mode.<br><br>
+        <strong>about:blank</strong> — opens the site inside an about:blank page. Filters see "about:blank" instead of the real URL.<br><br>
+        <strong>Direct</strong> — loads the URL straight in an iframe. No stealth, but fastest.<br><br>
+        <strong>&#8599; New Tab</strong> — fallback button opens any URL in a clean tab.
       </div>
     </div>
 
@@ -1182,7 +1185,11 @@ function openApp(id) {
   if (!win) return;
   const iframe = win.querySelector('iframe');
   if (iframe && iframe.dataset.src && (!iframe.src || iframe.src === 'about:blank' || iframe.src === window.location.href)) {
-    iframe.src = iframe.dataset.src;
+    // Use blob stealth loading for dock apps too
+    const targetUrl = iframe.dataset.src;
+    const html = `<!DOCTYPE html><html><head><style>*{margin:0;padding:0}body,html{width:100%;height:100%;overflow:hidden}iframe{width:100%;height:100%;border:none}</style></head><body><iframe src="${targetUrl}" sandbox="allow-same-origin allow-scripts allow-popups allow-forms allow-modals allow-top-navigation" allowfullscreen></iframe></body></html>`;
+    const blob = new Blob([html], { type: 'text/html' });
+    iframe.src = URL.createObjectURL(blob);
   }
   win.classList.add('show');
   openApps.add(id);
@@ -1202,13 +1209,14 @@ function closeApp(id) {
 }
 
 // ─── WEB PROXY BROWSER ──────────────────────────────────────────────────────
-const PROXIES = [
-  { name: 'Direct',       fmt: url => url },
-  { name: 'AllOrigins',   fmt: url => 'https://api.allorigins.win/raw?url=' + encodeURIComponent(url) },
-  { name: 'CORS Proxy',   fmt: url => 'https://corsproxy.io/?' + encodeURIComponent(url) },
-];
+// Proxy modes:
+// 0 = Stealth blob: wraps URL in a blob: page — filters can't see what's inside
+// 1 = about:blank: opens site inside about:blank — filters see "about:blank"
+// 2 = Direct: straight iframe load — no stealth
+
 let currentProxy = 0;
 let lastUrl = '';
+let aboutBlankWin = null;
 
 function switchProxy() {
   currentProxy = parseInt(document.getElementById('proxySelect').value);
@@ -1255,7 +1263,37 @@ function loadUrl(val) {
   home.style.display = 'none';
   frame.style.display = 'block';
 
-  frame.src = PROXIES[currentProxy].fmt(val);
+  if (currentProxy === 0) {
+    // Stealth blob mode — wrap URL in a blob: HTML page
+    // Filters see blob:// as the URL, not the actual site
+    const html = `<!DOCTYPE html><html><head><meta charset="utf-8"><style>*{margin:0;padding:0}body,html{width:100%;height:100%;overflow:hidden}iframe{width:100%;height:100%;border:none}</style></head><body><iframe src="${val}" sandbox="allow-same-origin allow-scripts allow-popups allow-forms allow-modals allow-top-navigation" allowfullscreen></iframe></body></html>`;
+    const blob = new Blob([html], { type: 'text/html' });
+    const blobUrl = URL.createObjectURL(blob);
+    frame.src = blobUrl;
+    // Clean up old blob URLs after a delay
+    setTimeout(() => URL.revokeObjectURL(blobUrl), 60000);
+  } else if (currentProxy === 1) {
+    // about:blank mode — load inside an about:blank iframe
+    frame.src = 'about:blank';
+    frame.onload = function onceLoaded() {
+      frame.onload = null;
+      try {
+        const doc = frame.contentDocument || frame.contentWindow.document;
+        doc.open();
+        doc.write(`<!DOCTYPE html><html><head><style>*{margin:0;padding:0}body,html{width:100%;height:100%;overflow:hidden}iframe{width:100%;height:100%;border:none}</style></head><body><iframe src="${val}" sandbox="allow-same-origin allow-scripts allow-popups allow-forms allow-modals allow-top-navigation" allowfullscreen></iframe></body></html>`);
+        doc.close();
+      } catch(e) {
+        // Fallback: just set src directly
+        frame.src = val;
+      }
+      status.className = 'proxy-status ok';
+      status.innerHTML = '&#9679; Connected (about:blank)';
+    };
+    return;
+  } else {
+    // Direct mode
+    frame.src = val;
+  }
 
   frame.onload = () => {
     status.className = 'proxy-status ok';
@@ -1263,7 +1301,7 @@ function loadUrl(val) {
   };
   frame.onerror = () => {
     status.className = 'proxy-status error';
-    status.innerHTML = '&#9679; Error - try another proxy';
+    status.innerHTML = '&#9679; Error - try another mode';
   };
 }
 
@@ -1283,7 +1321,18 @@ function browserHome() {
 function browserBack() { document.getElementById('browserFrame').contentWindow?.history.back(); }
 function browserForward() { document.getElementById('browserFrame').contentWindow?.history.forward(); }
 function browserRefresh() { if (lastUrl) loadUrl(lastUrl); }
-function openInNewTab() { if (lastUrl) window.open(lastUrl, '_blank'); }
+
+function openInNewTab() {
+  if (!lastUrl) return;
+  // about:blank trick for new tab — filter sees about:blank
+  const w = window.open('about:blank', '_blank');
+  if (w) {
+    w.document.write(`<!DOCTYPE html><html><head><title>${document.title}</title><style>*{margin:0;padding:0}body,html{width:100%;height:100%;overflow:hidden}iframe{width:100%;height:100%;border:none;position:fixed;top:0;left:0}</style></head><body><iframe src="${lastUrl}" allowfullscreen></iframe></body></html>`);
+    w.document.close();
+  } else {
+    window.open(lastUrl, '_blank');
+  }
+}
 
 // ─── VAST.AI ────────────────────────────────────────────────────────────────
 const VAST_API = 'https://console.vast.ai/api/v0';
