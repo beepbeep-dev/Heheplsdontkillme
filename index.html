@@ -2,473 +2,1078 @@
 <html lang="en">
 <head>
 <meta charset="UTF-8">
-<title>Sunshine OS</title> 
-
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Sunshine OS</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link href="https://fonts.googleapis.com/css2?family=SF+Pro+Display:wght@300;400;500;600&family=Inter:wght@300;400;500;600;700&display=swap" rel="stylesheet">
 <style>
-body {
+  *, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
+
+  :root {
+    --glass: rgba(255,255,255,0.12);
+    --glass-border: rgba(255,255,255,0.18);
+    --glass-dark: rgba(0,0,0,0.35);
+    --blur: blur(28px);
+    --blur-heavy: blur(50px);
+    --accent: #6366f1;
+    --accent2: #8b5cf6;
+    --text: #f0f0f0;
+    --text-dim: rgba(255,255,255,0.6);
+    --radius: 16px;
+    --shadow: 0 8px 32px rgba(0,0,0,0.4);
+  }
+
+  body {
     margin: 0;
     height: 100vh;
     overflow: hidden;
-    font-family: Arial, sans-serif;
-    color: white;
+    font-family: 'Inter', 'SF Pro Display', Arial, sans-serif;
+    color: var(--text);
     cursor: none;
     background: url('https://4kwallpapers.com/images/walls/thumbs_3t/22088.jpg') no-repeat center center fixed;
     background-size: cover;
-}
+    user-select: none;
+  }
 
-#startup {
+  /* STARTUP */
+  #startup {
     position: fixed;
     inset: 0;
-    background: linear-gradient(to top, #1a001f, #ff5e62, #ff9966);
+    background: linear-gradient(160deg, #0a0015 0%, #1a0030 40%, #ff5e62 80%, #ff9966 100%);
     display: flex;
     justify-content: center;
     align-items: center;
     flex-direction: column;
     z-index: 200000;
-}
+    transition: opacity 1s ease;
+  }
+  #startup.hide { opacity: 0; pointer-events: none; }
 
-.sun {
-    width: 120px;
-    height: 120px;
+  .sun {
+    width: 110px;
+    height: 110px;
     border-radius: 50%;
-    background: radial-gradient(circle, #ffd27f, #ff7e5f);
-    box-shadow: 0 0 60px rgba(255,150,100,0.8);
-    animation: sunRise 2.5s ease forwards;
-}
-
-.start-text {
-    margin-top: 30px;
-    font-size: 28px;
+    background: radial-gradient(circle at 35% 35%, #ffe880, #ff7e5f);
+    box-shadow: 0 0 80px rgba(255,160,80,0.9), 0 0 160px rgba(255,100,50,0.5);
+    animation: sunRise 2.2s cubic-bezier(.22,.68,0,1.2) forwards;
+  }
+  .sun-rays {
+    position: absolute;
+    width: 200px;
+    height: 200px;
+    border-radius: 50%;
+    background: radial-gradient(circle, rgba(255,200,100,0.15) 0%, transparent 70%);
+    animation: sunRise 2.2s cubic-bezier(.22,.68,0,1.2) forwards, pulse 3s ease-in-out infinite 2.2s;
+  }
+  .start-logo {
+    margin-top: 36px;
+    font-size: 32px;
+    font-weight: 700;
+    letter-spacing: 8px;
+    text-transform: uppercase;
+    background: linear-gradient(135deg, #fff 0%, #ffd480 50%, #ff9966 100%);
+    -webkit-background-clip: text;
+    -webkit-text-fill-color: transparent;
+    background-clip: text;
+    opacity: 0;
+    animation: fadeUp 1.2s ease forwards 0.9s;
+  }
+  .start-sub {
+    margin-top: 8px;
+    font-size: 12px;
     letter-spacing: 4px;
+    color: rgba(255,255,255,0.45);
     opacity: 0;
-    animation: fadeInText 1.5s ease forwards;
-    animation-delay: 0.8s;
-}
-
-.enter-btn {
-    margin-top: 40px;
-    padding: 12px 28px;
+    animation: fadeUp 1.2s ease forwards 1.2s;
+  }
+  .enter-btn {
+    margin-top: 52px;
+    padding: 14px 40px;
     border-radius: 999px;
-    border: none;
-    font-size: 14px;
-    letter-spacing: 2px;
-    background: rgba(255,255,255,0.15);
+    border: 1px solid rgba(255,255,255,0.25);
+    font-size: 13px;
+    font-weight: 600;
+    letter-spacing: 3px;
+    text-transform: uppercase;
+    background: rgba(255,255,255,0.1);
     color: white;
-    backdrop-filter: blur(10px);
+    backdrop-filter: blur(12px);
+    cursor: pointer;
     opacity: 0;
-    animation: fadeInText 1.5s ease forwards;
-    animation-delay: 1.6s;
-}
+    animation: fadeUp 1.2s ease forwards 1.6s;
+    transition: background 0.2s, transform 0.15s, box-shadow 0.2s;
+  }
+  .enter-btn:hover {
+    background: rgba(255,255,255,0.2);
+    transform: translateY(-2px);
+    box-shadow: 0 8px 24px rgba(0,0,0,0.3);
+  }
 
-@keyframes sunRise { from { transform: translateY(200px); opacity: 0; } to { transform: translateY(0); opacity: 1; } }
-@keyframes fadeInText { to { opacity: 1; } }
-@keyframes fadeOutStartup { to { opacity: 0; visibility: hidden; } }
+  @keyframes sunRise { from { transform: translateY(180px) scale(0.7); opacity: 0; } to { transform: translateY(0) scale(1); opacity: 1; } }
+  @keyframes fadeUp { from { opacity: 0; transform: translateY(16px); } to { opacity: 1; transform: translateY(0); } }
+  @keyframes pulse { 0%,100% { transform: scale(1); opacity:1; } 50% { transform: scale(1.08); opacity:0.7; } }
 
-#cursor {
-    width: 14px;
-    height: 14px;
+  /* CURSOR */
+  #cursor {
+    width: 12px; height: 12px;
     background: white;
     border-radius: 50%;
     position: fixed;
     pointer-events: none;
     z-index: 300000;
-    transform: translate(-50%, -50%);
-}
+    transform: translate(-50%,-50%);
+    transition: transform 0.08s ease, background 0.2s;
+    box-shadow: 0 0 6px rgba(255,255,255,0.6);
+  }
+  #cursor.clicking { transform: translate(-50%,-50%) scale(0.7); }
 
-.time { position: absolute; top: 50%; left: 50%; transform: translate(-50%, -50%); font-size: 96px; }
-.day { position: absolute; top: 62%; left: 50%; transform: translateX(-50%); font-size: 20px; }
+  /* MENU BAR */
+  #menubar {
+    position: fixed;
+    top: 0; left: 0; right: 0;
+    height: 28px;
+    background: rgba(0,0,0,0.45);
+    backdrop-filter: blur(30px);
+    -webkit-backdrop-filter: blur(30px);
+    border-bottom: 1px solid rgba(255,255,255,0.08);
+    display: flex;
+    align-items: center;
+    padding: 0 16px;
+    z-index: 50000;
+    font-size: 13px;
+    font-weight: 500;
+  }
+  #menubar .apple { font-size: 16px; margin-right: 18px; opacity: 0.9; cursor: pointer; }
+  #menubar .menu-items { display: flex; gap: 18px; color: rgba(255,255,255,0.85); }
+  #menubar .menu-right { margin-left: auto; display: flex; align-items: center; gap: 14px; color: rgba(255,255,255,0.85); font-size: 13px; }
+  #menuTime { font-variant-numeric: tabular-nums; }
 
-.dock {
+  /* DESKTOP CLOCK */
+  .clock-widget {
     position: absolute;
-    bottom: 30px;
+    top: 50%;
+    left: 50%;
+    transform: translate(-50%, -55%);
+    text-align: center;
+    pointer-events: none;
+  }
+  .clock-time {
+    font-size: 86px;
+    font-weight: 200;
+    letter-spacing: -2px;
+    text-shadow: 0 4px 24px rgba(0,0,0,0.5);
+    line-height: 1;
+  }
+  .clock-date {
+    margin-top: 10px;
+    font-size: 18px;
+    font-weight: 300;
+    letter-spacing: 3px;
+    color: rgba(255,255,255,0.8);
+    text-shadow: 0 2px 8px rgba(0,0,0,0.4);
+  }
+
+  /* DOCK */
+  .dock {
+    position: fixed;
+    bottom: 16px;
     left: 50%;
     transform: translateX(-50%);
     display: flex;
-    gap: 14px;
-    padding: 10px 14px;
-    border-radius: 14px;
-    background: rgba(0,0,0,0.4);
-    backdrop-filter: blur(10px);
-}
-
-.app {
-    width: 40px;
-    height: 40px;
-    border-radius: 10px;
+    align-items: flex-end;
+    gap: 8px;
+    padding: 10px 16px 10px;
+    border-radius: 22px;
+    background: rgba(255,255,255,0.13);
+    backdrop-filter: blur(40px);
+    -webkit-backdrop-filter: blur(40px);
+    border: 1px solid rgba(255,255,255,0.22);
+    box-shadow: 0 8px 40px rgba(0,0,0,0.5), inset 0 1px 0 rgba(255,255,255,0.15);
+    z-index: 10000;
+  }
+  .dock-separator {
+    width: 1px;
+    height: 42px;
+    background: rgba(255,255,255,0.2);
+    margin: 0 4px;
+    align-self: center;
+  }
+  .dock-item {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    position: relative;
+    cursor: pointer;
+  }
+  .dock-item .icon {
+    width: 48px;
+    height: 48px;
+    border-radius: 13px;
     background-size: cover;
     background-position: center;
-    background-color: rgba(255,255,255,0.1);
-    transition: 0.2s ease;
-    cursor: pointer;
-}
-
-.library-icon {
-    width: 40px;
-    height: 40px;
-    border-radius: 10px;
-    background-color: rgba(255,255,255,0.1);
-    display: flex;
-    justify-content: center;
-    align-items: center;
-    cursor: pointer;
-    transition: 0.2s ease;
-}
-
-.library-icon img { width: 24px; height: 24px; }
-.app:hover, .library-icon:hover { transform: scale(1.15); }
-
-.fullscreen-app { position: fixed; inset: 0; background: black; display: none; z-index: 100000; }
-.fullscreen-app.show { display: block; }
-.fullscreen-app iframe { width: 100%; height: 100%; border: none; }
-
-.close-btn {
+    background-color: rgba(255,255,255,0.12);
+    transition: transform 0.2s cubic-bezier(.34,1.56,.64,1);
+    position: relative;
+    overflow: hidden;
+  }
+  .dock-item .icon::after {
+    content: '';
     position: absolute;
-    top: 12px;
-    right: 14px;
-    z-index: 10;
-    background: rgba(0,0,0,0.6);
-    border: none;
-    color: white;
-    padding: 8px 12px;
-    border-radius: 10px;
-    cursor: pointer;
-}
-
-.app-library {
-    position: fixed;
     inset: 0;
-    background: rgba(0,0,0,0.85);
-    backdrop-filter: blur(20px);
+    background: linear-gradient(135deg, rgba(255,255,255,0.15) 0%, transparent 60%);
+    border-radius: inherit;
+    pointer-events: none;
+  }
+  .dock-item:hover .icon { transform: translateY(-12px) scale(1.25); }
+  .dock-item .label {
+    position: absolute;
+    bottom: calc(100% + 14px);
+    left: 50%;
+    transform: translateX(-50%);
+    background: rgba(30,30,30,0.85);
+    backdrop-filter: blur(8px);
+    color: white;
+    font-size: 11px;
+    font-weight: 500;
+    padding: 4px 10px;
+    border-radius: 6px;
+    white-space: nowrap;
+    opacity: 0;
+    pointer-events: none;
+    transition: opacity 0.15s;
+    border: 1px solid rgba(255,255,255,0.12);
+  }
+  .dock-item:hover .label { opacity: 1; }
+  .dock-item .dot {
+    width: 4px; height: 4px;
+    background: rgba(255,255,255,0.7);
+    border-radius: 50%;
+    margin-top: 4px;
+    opacity: 0;
+    transition: opacity 0.2s;
+  }
+  .dock-item.running .dot { opacity: 1; }
+
+  /* FULLSCREEN WINDOWS */
+  .window {
+    position: fixed;
+    inset: 28px 0 0 0;
+    background: rgba(10,10,20,0.92);
+    backdrop-filter: blur(40px);
+    -webkit-backdrop-filter: blur(40px);
+    display: none;
+    z-index: 100000;
+    flex-direction: column;
+    animation: windowOpen 0.22s cubic-bezier(.34,1.2,.64,1);
+    overflow: hidden;
+  }
+  .window.show { display: flex; }
+  @keyframes windowOpen { from { opacity:0; transform: scale(0.96); } to { opacity:1; transform: scale(1); } }
+
+  .window-titlebar {
+    height: 44px;
+    display: flex;
+    align-items: center;
+    padding: 0 16px;
+    background: rgba(255,255,255,0.04);
+    border-bottom: 1px solid rgba(255,255,255,0.08);
+    flex-shrink: 0;
+    gap: 10px;
+  }
+  .win-controls { display: flex; gap: 7px; }
+  .win-btn {
+    width: 13px; height: 13px;
+    border-radius: 50%;
+    border: none;
+    cursor: pointer;
+    transition: filter 0.15s;
+  }
+  .win-btn:hover { filter: brightness(1.3); }
+  .win-close { background: #ff5f57; }
+  .win-min { background: #ffbd2e; }
+  .win-max { background: #28c840; }
+  .win-title {
+    flex: 1;
+    text-align: center;
+    font-size: 13px;
+    font-weight: 500;
+    color: rgba(255,255,255,0.8);
+    pointer-events: none;
+  }
+  .window iframe {
+    flex: 1;
+    border: none;
+    width: 100%;
+  }
+
+  /* WEB PROXY BROWSER */
+  #browser {
+    flex-direction: column;
+  }
+  .browser-bar {
+    display: flex;
+    align-items: center;
+    gap: 10px;
+    padding: 8px 16px;
+    background: rgba(255,255,255,0.04);
+    border-bottom: 1px solid rgba(255,255,255,0.08);
+    flex-shrink: 0;
+  }
+  .browser-nav { display: flex; gap: 6px; }
+  .nav-btn {
+    width: 30px; height: 30px;
+    border-radius: 8px;
+    border: 1px solid rgba(255,255,255,0.1);
+    background: rgba(255,255,255,0.07);
+    color: rgba(255,255,255,0.7);
+    font-size: 14px;
+    cursor: pointer;
+    display: flex; align-items: center; justify-content: center;
+    transition: background 0.15s;
+  }
+  .nav-btn:hover { background: rgba(255,255,255,0.15); }
+  .url-input {
+    flex: 1;
+    height: 32px;
+    border-radius: 8px;
+    border: 1px solid rgba(255,255,255,0.12);
+    background: rgba(0,0,0,0.35);
+    color: white;
+    padding: 0 14px;
+    font-size: 13px;
+    font-family: inherit;
+    outline: none;
+    transition: border-color 0.2s, background 0.2s;
+  }
+  .url-input:focus { border-color: rgba(99,102,241,0.7); background: rgba(0,0,0,0.5); }
+  .go-btn {
+    height: 32px;
+    padding: 0 16px;
+    border-radius: 8px;
+    border: none;
+    background: var(--accent);
+    color: white;
+    font-size: 13px;
+    font-weight: 600;
+    cursor: pointer;
+    transition: background 0.15s, transform 0.1s;
+    font-family: inherit;
+  }
+  .go-btn:hover { background: #4f46e5; }
+  .go-btn:active { transform: scale(0.96); }
+  #browserFrame { flex: 1; border: none; width: 100%; background: #111; }
+
+  /* APP LIBRARY */
+  #library {
+    position: fixed;
+    inset: 28px 0 0 0;
+    background: rgba(5,5,15,0.88);
+    backdrop-filter: blur(60px);
+    -webkit-backdrop-filter: blur(60px);
     display: none;
     z-index: 150000;
-    padding: 40px;
-}
-
-.app-library.show { display: block; }
-
-.library-grid {
-    display: grid;
-    grid-template-columns: repeat(auto-fill, minmax(80px,1fr));
-    gap: 20px;
-    margin-top: 40px;
-}
-
-.library-app {
-    width: 70px;
-    height: 70px;
-    border-radius: 14px;
-    background-size: cover;
-    background-position: center;
+    flex-direction: column;
+    padding: 40px 60px;
+    animation: windowOpen 0.22s cubic-bezier(.34,1.2,.64,1);
+  }
+  #library.show { display: flex; }
+  .library-header {
+    display: flex; align-items: center; justify-content: space-between;
+    margin-bottom: 32px;
+  }
+  .library-title { font-size: 26px; font-weight: 700; }
+  .library-close {
+    width: 34px; height: 34px;
+    border-radius: 50%;
+    border: none;
+    background: rgba(255,255,255,0.1);
+    color: white;
+    font-size: 18px;
     cursor: pointer;
-}
-
-
-.bg-preview {
-    width: 120px;
-    height: 80px;
+    display: flex; align-items: center; justify-content: center;
+    transition: background 0.15s;
+  }
+  .library-close:hover { background: rgba(255,255,255,0.2); }
+  .library-search {
+    width: 100%;
+    height: 42px;
     border-radius: 12px;
+    border: 1px solid rgba(255,255,255,0.1);
+    background: rgba(255,255,255,0.07);
+    color: white;
+    padding: 0 18px;
+    font-size: 15px;
+    font-family: inherit;
+    outline: none;
+    margin-bottom: 28px;
+    transition: border-color 0.2s;
+  }
+  .library-search:focus { border-color: var(--accent); }
+  .library-grid {
+    display: grid;
+    grid-template-columns: repeat(auto-fill, minmax(90px, 1fr));
+    gap: 24px;
+    overflow-y: auto;
+    padding-bottom: 20px;
+  }
+  .library-app {
+    display: flex; flex-direction: column; align-items: center; gap: 8px;
+    cursor: pointer;
+  }
+  .library-app-icon {
+    width: 72px; height: 72px;
+    border-radius: 18px;
+    background-size: cover; background-position: center;
+    background-color: rgba(255,255,255,0.08);
+    transition: transform 0.2s cubic-bezier(.34,1.4,.64,1);
+    overflow: hidden;
+    position: relative;
+    border: 1px solid rgba(255,255,255,0.1);
+    box-shadow: 0 4px 16px rgba(0,0,0,0.3);
+  }
+  .library-app-icon::after {
+    content: '';
+    position: absolute;
+    inset: 0;
+    background: linear-gradient(135deg, rgba(255,255,255,0.12) 0%, transparent 60%);
+    border-radius: inherit;
+  }
+  .library-app:hover .library-app-icon { transform: scale(1.08); }
+  .library-app-name {
+    font-size: 11px; color: rgba(255,255,255,0.75);
+    text-align: center; max-width: 80px;
+    overflow: hidden; text-overflow: ellipsis; white-space: nowrap;
+  }
+
+  /* SETTINGS */
+  #settings-panel {
+    position: fixed;
+    top: 50%; left: 50%;
+    transform: translate(-50%, -50%) scale(0.95);
+    width: 560px;
+    max-height: 80vh;
+    background: rgba(20,20,30,0.95);
+    backdrop-filter: blur(60px);
+    -webkit-backdrop-filter: blur(60px);
+    border: 1px solid rgba(255,255,255,0.1);
+    border-radius: 20px;
+    display: none;
+    flex-direction: column;
+    z-index: 160000;
+    overflow: hidden;
+    box-shadow: 0 24px 80px rgba(0,0,0,0.7);
+    transition: transform 0.2s cubic-bezier(.34,1.2,.64,1), opacity 0.2s;
+    opacity: 0;
+  }
+  #settings-panel.show {
+    display: flex;
+    transform: translate(-50%, -50%) scale(1);
+    opacity: 1;
+  }
+  #settings-overlay {
+    position: fixed; inset: 0;
+    background: rgba(0,0,0,0.5);
+    z-index: 155000;
+    display: none;
+  }
+  #settings-overlay.show { display: block; }
+  .settings-titlebar {
+    display: flex; align-items: center;
+    padding: 18px 24px;
+    border-bottom: 1px solid rgba(255,255,255,0.08);
+  }
+  .settings-titlebar h2 { flex: 1; font-size: 18px; font-weight: 600; }
+  .settings-close-btn {
+    width: 28px; height: 28px; border-radius: 50%;
+    border: none; background: rgba(255,255,255,0.08);
+    color: white; font-size: 16px; cursor: pointer;
+    display: flex; align-items: center; justify-content: center;
+    transition: background 0.15s;
+  }
+  .settings-close-btn:hover { background: rgba(255,100,100,0.3); }
+  .settings-body { padding: 24px; overflow-y: auto; display: flex; flex-direction: column; gap: 28px; }
+  .settings-section { display: flex; flex-direction: column; gap: 14px; }
+  .settings-section-title {
+    font-size: 11px; font-weight: 600; letter-spacing: 1px;
+    text-transform: uppercase; color: rgba(255,255,255,0.4);
+  }
+  .settings-row { display: flex; align-items: center; gap: 12px; }
+  .settings-label { font-size: 14px; flex: 1; color: rgba(255,255,255,0.85); }
+  .settings-select {
+    background: rgba(255,255,255,0.07);
+    border: 1px solid rgba(255,255,255,0.12);
+    color: white;
+    border-radius: 8px;
+    padding: 7px 12px;
+    font-size: 13px;
+    font-family: inherit;
+    cursor: pointer;
+    outline: none;
+  }
+  .settings-select:focus { border-color: var(--accent); }
+  .bg-grid {
+    display: grid;
+    grid-template-columns: repeat(5, 1fr);
+    gap: 10px;
+  }
+  .bg-thumb {
+    aspect-ratio: 16/10;
+    border-radius: 8px;
     background-size: cover;
     background-position: center;
     cursor: pointer;
-    border: 2px solid rgba(255,255,255,0.2);
-    transition: transform 0.2s, border-color 0.2s;
-}
-.bg-preview:hover { transform: scale(1.1); border-color: white; }
-.setting-item { margin-bottom: 30px; }
-.setting-item label { font-size: 18px; display: block; margin-bottom: 10px; }
+    border: 2px solid transparent;
+    transition: transform 0.15s, border-color 0.15s;
+    overflow: hidden;
+  }
+  .bg-thumb:hover { transform: scale(1.05); border-color: var(--accent); }
+  .bg-thumb.active { border-color: white; }
+  .proxy-note {
+    font-size: 12px; color: rgba(255,255,255,0.45);
+    background: rgba(99,102,241,0.1);
+    border: 1px solid rgba(99,102,241,0.2);
+    border-radius: 8px;
+    padding: 10px 14px;
+    line-height: 1.5;
+  }
 </style>
 </head>
 <body>
 
+<!-- STARTUP SCREEN -->
 <div id="startup">
-    <div class="sun"></div>
-    <div class="start-text">SUNSHINE OS</div>
-    <button class="enter-btn" onclick="enterOS()">ENTER</button>
+  <div class="sun-rays"></div>
+  <div class="sun"></div>
+  <div class="start-logo">Sunshine OS</div>
+  <div class="start-sub">Version 2.0</div>
+  <button class="enter-btn" onclick="enterOS()">Enter</button>
 </div>
 
+<!-- CURSOR -->
 <div id="cursor"></div>
 
-<div class="time" id="time"></div>
-<div class="day" id="day"></div>
+<!-- MENU BAR -->
+<div id="menubar">
+  <span class="apple">&#63743;</span>
+  <div class="menu-items">
+    <span>Finder</span>
+    <span>File</span>
+    <span>Edit</span>
+    <span>View</span>
+  </div>
+  <div class="menu-right">
+    <span>&#128246;</span>
+    <span>&#128266;</span>
+    <span>&#9679;</span>
+    <span id="menuTime"></span>
+  </div>
+</div>
 
+<!-- DESKTOP -->
+<div class="clock-widget">
+  <div class="clock-time" id="clockTime"></div>
+  <div class="clock-date" id="clockDate"></div>
+</div>
+
+<!-- DOCK -->
 <div class="dock">
-<div class="library-icon" onclick="openLibrary()">
-<img src="https://static.thenounproject.com/png/5443009-200.png">
-</div>
+  <div class="dock-item" onclick="openApp('browser')" title="Browser">
+    <div class="icon" style="background: linear-gradient(135deg,#4fc3f7,#0288d1); display:flex; align-items:center; justify-content:center; font-size:24px;">🌐</div>
+    <div class="label">Browser</div>
+    <div class="dot" id="dot-browser"></div>
+  </div>
+  <div class="dock-item" onclick="openApp('netflix')" title="Netflix">
+    <div class="icon" style="background-image:url('https://upload.wikimedia.org/wikipedia/commons/thumb/7/75/Netflix_icon.svg/500px-Netflix_icon.svg.png'); background-color:#000;"></div>
+    <div class="label">Netflix</div>
+    <div class="dot" id="dot-netflix"></div>
+  </div>
+  <div class="dock-item" onclick="openApp('spotify')" title="Spotify">
+    <div class="icon" style="background-image:url('https://cdn.pixabay.com/photo/2016/10/22/00/15/spotify-1759471_1280.jpg');"></div>
+    <div class="label">Spotify</div>
+    <div class="dot" id="dot-spotify"></div>
+  </div>
+  <div class="dock-item" onclick="openApp('google')" title="Google">
+    <div class="icon" style="background:linear-gradient(135deg,#4285F4,#34A853,#FBBC05,#EA4335); display:flex; align-items:center; justify-content:center; font-size:24px; color:white;">G</div>
+    <div class="label">Google</div>
+    <div class="dot" id="dot-google"></div>
+  </div>
+  <div class="dock-item" onclick="openApp('chatgpt')" title="ChatGPT">
+    <div class="icon" style="background-image:url('https://uxwing.com/wp-content/themes/uxwing/download/brands-and-social-media/chatgpt-icon.png'); background-color:#10a37f;"></div>
+    <div class="label">ChatGPT</div>
+    <div class="dot" id="dot-chatgpt"></div>
+  </div>
+  <div class="dock-item" onclick="openApp('discord')" title="Discord">
+    <div class="icon" style="background-image:url('https://assets-global.website-files.com/6257adef93867e50d84d30e2/636e0a6a49cf127bf92de1e2_icon_clyde_blurple_RGB.png'); background-color:#5865F2; background-size:70%;  background-repeat:no-repeat; background-position:center;"></div>
+    <div class="label">Discord</div>
+    <div class="dot" id="dot-discord"></div>
+  </div>
+  <div class="dock-item" onclick="openApp('roblox')" title="Roblox">
+    <div class="icon" style="background-image:url('https://upload.wikimedia.org/wikipedia/commons/thumb/f/f2/Roblox_%282025%29_%28App_Icon%29.svg/250px-Roblox_%282025%29_%28App_Icon%29.svg.png');"></div>
+    <div class="label">Roblox</div>
+    <div class="dot" id="dot-roblox"></div>
+  </div>
+  <div class="dock-item" onclick="openApp('geforce')" title="GeForce Now">
+    <div class="icon" style="background-image:url('https://play-lh.googleusercontent.com/_-b_HQXrVyyhZSHj_BoE9u_-cxkcHDH_yLX5rDjJsFMIfsCNQs9F3QP4JvEFcWaSIz0=w240-h480-rw');"></div>
+    <div class="label">GeForce Now</div>
+    <div class="dot" id="dot-geforce"></div>
+  </div>
+  <div class="dock-item" onclick="openApp('anime')" title="Anime">
+    <div class="icon" style="background:linear-gradient(135deg,#ff6b9d,#c44bff); display:flex; align-items:center; justify-content:center; font-size:22px;">🎌</div>
+    <div class="label">Anime</div>
+    <div class="dot" id="dot-anime"></div>
+  </div>
 
-<div class="app" data-app="netflix" style="background-image:url('https://upload.wikimedia.org/wikipedia/commons/thumb/7/75/Netflix_icon.svg/500px-Netflix_icon.svg.png')"></div>
-<div class="app" data-app="psify" style="background-image:url('https://upload.wikimedia.org/wikipedia/commons/9/91/PlayStation_App_Icon.jpg')"></div>
-<div class="app" data-app="google" style="background-image:url('data:image/jpeg;base64,/9j/4AAQSkZJRgABAgAAAQABAAD/2wBDAAgGBgcGBQgHBwcJCQgKDBQNDAsLDBkSEw8UHRofHh0aHBwgJC4nICIsIxwcKDcpLDAxNDQ0Hyc5PTgyPC4zNDL/2wBDAQkJCQwLDBgNDRgyIRwhMjIyMjIyMjIyMjIyMjIyMjIyMjIyMjIyMjIyMjIyMjIyMjIyMjIyMjIyMjIyMjIyMjL/wAARCAGAAYADASIAAhEBAxEB/8QAHwAAAQUBAQEBAQEAAAAAAAAAAAECAwQFBgcICQoL/8QAtRAAAgEDAwIEAwUFBAQAAAF9AQIDAAQRBRIhMUEGE1FhByJxFDKBkaEII0KxwRVS0fAkM2JyggkKFhcYGRolJicoKSo0NTY3ODk6Q0RFRkdISUpTVFVWV1hZWmNkZWZnaGlqc3R1dnd4eXqDhIWGh4iJipKTlJWWl5iZmqKjpKWmp6ipqrKztLW2t7i5usLDxMXGx8jJytLT1NXW19jZ2uHi4+Tl5ufo6erx8vP09fb3+Pn6/8QAHwEAAwEBAQEBAQEBAQAAAAAAAAECAwQFBgcICQoL/8QAtREAAgECBAQDBAcFBAQAAQJ3AAECAxEEBSExBhJBUQdhcRMiMoEIFEKRobHBCSMzUvAVYnLRChYkNOEl8RcYGRomJygpKjU2Nzg5OkNERUZHSElKU1RVVldYWVpjZGVmZ2hpanN0dXZ3eHl6goOEhYaHiImKkpOUlZaXmJmaoqOkpaanqKmqsrO0tba3uLm6wsPExcbHyMnK0tPU1dbX2Nna4uPk5ebn6Onq8vP09fb3+Pn6/9oADAMBAAIRAxEAPwDxLPOaSiitzQKKKKACiiigAooooAKKKKACiiigAooooAKKKKACiiigAooooAKKKKACiiigAooooAKKKKACiiigAooooAKKKKACiiigAooooAKKKKACiiigAooooAKKKKACiiigAooooAKKKKACiiigAooooAKKKKACiiigAooooAKKKKACiiigAooooAKKKKACiiigAooooAKKKKACiiigAooooAKKKKACiiigAooooAKKKKACiiigAooooAKKKKACiiigAooooAKKKKACiiigAooooAKKKKACiiigAooooAKKKKACiiigAooooAKKKKACiiigAooooAKKKKACiiigAooooAKKKKACiiigAooooAKKKKACiiigAooooAKKKKACiiigAooooAKKKKACiiigAooooAKKKKACiiigAooooAKKKKACiiigAooooAKKKKACiiigAooooAKKKKACiiigAooooAKKKKACiiigAooooAKKKKACiiigAooooAKKKKACiiigAooooAKKKUccGgBKKD1ooAKKKKACiiigAooooAKKKKACiiigAooooAKKKKACiiigAooooAKKKKACiiigAooooAKKKKACiiigAooooAKKOlFABRRRQAUUUUAFFFFABRRRQAUUUUAFFFFABRRRQAUUUUAFFFFABRRRQAUUUUAFFFFABRRRQAUUUUAFFFFABQaKKACiiigAooooAKKKKACinAetGPSnYBCMUAZpcZPSpIoXlkCRozOeiqMk1pGk5bIYzHtRj2rctfDV7NgzbYF/2+T+Q/xFa8HhmyjH70vMfdto/T/GvRo5VXqa2svM1jRm+hxoTPpQU+legx6fZwj93awr77BmlktoHXa8MbD0KA13rInbWWpp9Wfc88Ix2pnc10WuaTFbJ9ptxtQnDJngehFc+RjNeNi8LLDz5JHPKLi7MbRRRXGSFFFFABRRRQAUUUUAFFFFABRRRQAUUUUAFFFFABRRRQAUUUUAFFFFABRRRQAUUUUAFFFFABRRTgKaTAQDNKBTgPSniImto0ZMdmR4xSbc81ZS3LsFVSWPYDJq7FoeoSf6uyuCPeMgfma3jg5y6FqEnsjJIzRt+tbv/CNar/z4yfmv+NRy6DqMIy9lPj/ZQt/KreCn2H7GfZmMVoC1bktXibbIjIfRhik8jFZ/VZkcrK4BJ4qeCznuZBHBE0jnsozWzoulWN3Jm6vFQ54hHylvxPH5c116w2mm2xwI7eEdSePzPc16OGyzmXNN2R0U8O5Lmb0ObsvChAD3smO/lxn+Z/w/Ot+2tLezTZbxLGO+Op+p71jah4riTKWUfmH/AJ6OMD8B1/lXPXeq3V2T507MD/CDhfyHFdrxGFwulNXf9dTRzpU/h1Z2k2p2NuxWS6jDDqAcn8hVdNb02Rgq3IBP95WUfmRXCmQ0qyEGsP7Zm3ZJEfWpdj0kYZQykFSMgg9aaw4rF8KzPLbXEZJKIylfbOc/yrdZa9uhW9rTU+51wlzxTMTxAwGkSg9SygD/AIED/SuNbmui8T3IMkVsD9352+p6fpn865s896+czmop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IHvbqSbByAx+UfRRwKynmJrKdeMepw1swe0NDX1bxBf6vJvvLhmUHKxrwi/Qf161jvOTUTPk5zTd3WuCrinLQ82dSUndjy5PWjeaZu4pNxrmdWRncl8xqXzTioSeKAcVSrSHcm8003ec1FRmk6sguSFzim7qbRUObYhc9aSiipuIKKKKQBRRRQAUUUUAFFFFABRRRQAUUUUAFFFFABRRRQAUUUUAFFFFABRRRQAUUUUAFFFFABRRRQAoNSLIUqKlyauM3HVDTsXYr6WEHy5Hjz12MVz+VD3jSMWclmPdjk1T3CjdXQsVPuX7SRZa4JqJpT61Fk0nWoliJMlybJC+R1zTCaSispTbFcKKKKgQUUUUAFFFFABRRRQAUUUUAFFFFABRRRQAUUUUAFFFFABRRRQAUUUUAFFFFABRRRQAUUUUAFFFFABRRRQAUUUUAFFFFABRRRQAUUUUAFFFFABRRRQAUUUUAFFFFABRRRQAUUUUAFFFFABRRRQAUUUUAFFFFABRRRQAUUUUAFFFFABRRRQAUUUUAFFFFABRRRQAUUUUAFFFFABRRRQAUUUUAFFFFABRRRQAUUUUAFFFAx3oAKKKKACiiigAooooAKKKKACiiigAooooAKKKKACiiigAooooAKKKKACiiigAooooAKKKKACiiigAooooAKKKKACiiigAooooAKKKKACiiigAooooAKKKKACiiigAooooAKKKKACiiigAooooAKKKKACiiigAooooAKKKKACiiigAooooAKKKKACiiigAooooAKKKKACiiigAooooAKKKKACiiigAooooAKKKKACiiigAooooAKKKKACiiigAooooAKKKKACiiigAooooAKKKKACiiigAooooAKKKKACiiigAooooAKKKKACiiigAooooAKKKKACiiigAooooAKKKKACiiigAooooAKKKKACiiigAooooAKKKKACiiigAooooAKKKKACiiigAooooAKKKKACiiigAooooAKKKKACiiigAooooAKKKKACiiigAooooAKKKKACiiigAooooAKKKKACiiigAooooAKKKKACiiigAooooAKKKKACiiigAooooAKKKKACiiigAooooAKKKKACiiigAooooAKKKKACiiigAooooAKKKKACiiigAooooAKKKKACiiigAoopM0ALRSZpc5oAKKKKACiiigD//2Q==')"></div>
-<div class="app" data-app="spotify" style="background-image:url('https://cdn.pixabay.com/photo/2016/10/22/00/15/spotify-1759471_1280.jpg')"></div>
-<div class="app" data-app="chatgpt" style="background-image:url('https://uxwing.com/wp-content/themes/uxwing/download/brands-and-social-media/chatgpt-icon.png')"></div>
-<div class="app" data-app="roblox" style="background-image:url('https://upload.wikimedia.org/wikipedia/commons/thumb/f/f2/Roblox_%282025%29_%28App_Icon%29.svg/250px-Roblox_%282025%29_%28App_Icon%29.svg.png')"></div>
-<div class="app" data-app="geforce" style="background-image:url('https://play-lh.googleusercontent.com/_-b_HQXrVyyhZSHj_BoE9u_-cxkcHDH_yLX5rDjJsFMIfsCNQs9F3QP4JvEFcWaSIz0=w240-h480-rw')"></div>
-<div class="app" data-app="discord" style="background-image:url('https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcQoCkY_K9TX2dN21sxK2Np0a2vqnKKHGWP7Ow&s')"></div>
-<div class="app" data-app="anime" style="background-image:url('https://images-wixmp-ed30a86b8c4ca887773594c2.wixmp.com/f/a0a4547a-06c5-4740-b87a-ca9c4fa0171e/dduaesk-2b3e85d2-3116-4eb5-8260-f413d1fc670e.png?token=eyJ0eXAiOiJKV1QiLCJhbGciOiJIUzI1NiJ9.eyJzdWIiOiJ1cm46YXBwOjdlMGQxODg5ODIyNjQzNzNhNWYwZDQxNWVhMGQyNmUwIiwiaXNzIjoidXJuOmFwcDo3ZTBkMTg4OTgyMjY0MzczYTVmMGQ0MTVlYTBkMjZlMCIsIm9iaiI6W1t7InBhdGgiOiIvZi9hMGE0NTQ3YS0wNmM1LTQ3NDAtYjg3YS1jYTljNGZhMDE3MWUvZGR1YWVzay0yYjNlODVkMi0zMTE2LTRlYjUtODI2MC1mNDEzZDFmYzY3MGUucG5nIn1dXSwiYXVkIjpbInVybjpzZXJ2aWNlOmZpbGUuZG93bmxvYWQiXX0.vReffTSSKpde4w8EwFxz_CttxlLay8fXOq0goYh6rsg')"></div>
-<div class="app" data-app="settings" style="background-image:url('https://upload.wikimedia.org/wikipedia/en/thumb/2/23/System_Preferences_icon.png/250px-System_Preferences_icon.png')"></div>
-</div>
+  <div class="dock-separator"></div>
 
-
-<div class="app-library" id="library">
-<button class="close-btn" onclick="closeLibrary()">Close</button>
-<h2>App Library</h2>
-<div class="library-grid" id="libraryGrid"></div>
-</div>
-
-
-<div class="fullscreen-app" id="netflix"><button class="close-btn">Close</button><iframe src="https://sunshineduponu.b-cdn.net/embed.html?url=https://mathiscoolz.b-cdn.net/"></iframe></div>
-<div class="fullscreen-app" id="psify"><button class="close-btn">Close</button><iframe src="https://thisissonobodyplaysgame.github.io/Chicken/"></iframe></div>
-<div class="fullscreen-app" id="google"><button class="close-btn">Close</button><iframe src="https://blockedmath.b-cdn.net/#home"></iframe></div>
-<div class="fullscreen-app" id="spotify"><button class="close-btn">Close</button><iframe src="https://sunshineduponu.b-cdn.net/embed.html?url=https://music.youtube.com/?hl=en"></iframe></div>
-<div class="fullscreen-app" id="chatgpt"><button class="close-btn">Close</button><iframe src="https://notegpt.io/ai-homework-helper"></iframe></div>
-<div class="fullscreen-app" id="geforce"><button class="close-btn">Close</button><iframe src="https://sunshineduponu.b-cdn.net/embed.html?url=https://play.geforcenow.com"></iframe></div>
-<div class="fullscreen-app" id="discord"><button class="close-btn">Close</button><iframe src="https://sunshineduponu.b-cdn.net/embed.html?url=https://discord.com"></iframe></div>
-<div class="fullscreen-app" id="roblox"><button class="close-btn">Close</button><iframe src="https://sunshineduponu.b-cdn.net/embed.html?url=https://nowgg.fun/apps/a/19900/b.html"></iframe></div>
-<div class="fullscreen-app" id="anime"><button class="close-btn">Close</button><iframe src="https://sunshineduponu.b-cdn.net/embed.html?url=https://senshi.live"></iframe></div>
-<div class="fullscreen-app" id="blooket"><button class="close-btn">Close</button><iframe src="https://sunshineduponu.b-cdn.net/embed.html?url=https://blooketbot.schoolcheats.net"></iframe></div>
-<div class="fullscreen-app" id="gta"><button class="close-btn">Close</button><iframe src="https://sunshineduponu.b-cdn.net/embed.html?url=https://t9os.space/gtavc"></iframe></div>
-
-
-<div class="fullscreen-app" id="settings">
-    <button class="close-btn">Close</button>
-    <div style="padding: 40px; color: white; font-family: Arial, sans-serif;">
-        <h2>Settings</h2>
-        <div class="setting-item">
-            <label for="tabCloak">Tab Cloak:</label>
-            <select id="tabCloak">
-                <option value="default">Default</option>
-                <option value="gmail">Gmail</option>
-                <option value="google">Google</option>
-                <option value="schoology">Schoology</option>
-            </select>
-        </div>
-        <div class="setting-item">
-<div class="setting-item">
-    <label>Backgrounds:</label>
-    <div style="display:flex; gap:20px; flex-wrap:wrap;">
-        <div class="bg-preview" data-bg="https://4kwallpapers.com/images/walls/thumbs_3t/22088.jpg" style="background-image:url('https://4kwallpapers.com/images/walls/thumbs_3t/22088.jpg');"></div>
-        <div class="bg-preview" data-bg="https://4kwallpapers.com/images/walls/thumbs_3t/25505.jpg" style="background-image:url('https://4kwallpapers.com/images/walls/thumbs_3t/25505.jpg');"></div>
-        <div class="bg-preview" data-bg="https://4kwallpapers.com/images/walls/thumbs_3t/25476.jpg" style="background-image:url('https://4kwallpapers.com/images/walls/thumbs_3t/25476.jpg');"></div>
-        <div class="bg-preview" data-bg="https://4kwallpapers.com/images/walls/thumbs_3t/26070.jpg" style="background-image:url('https://4kwallpapers.com/images/walls/thumbs_3t/26070.jpg');"></div>
-        <div class="bg-preview" data-bg="https://4kwallpapers.com/images/walls/thumbs_3t/24058.jpg" style="background-image:url('https://4kwallpapers.com/images/walls/thumbs_3t/24058.jpg');"></div>
-        <div class="bg-preview" data-bg="https://4kwallpapers.com/images/walls/thumbs_3t/21436.jpg" style="background-image:url('https://4kwallpapers.com/images/walls/thumbs_3t/21436.jpg');"></div>
-        <div class="bg-preview" data-bg="https://4kwallpapers.com/images/walls/thumbs_3t/21314.jpg" style="background-image:url('https://4kwallpapers.com/images/walls/thumbs_3t/21314.jpg');"></div>
-        <div class="bg-preview" data-bg="https://4kwallpapers.com/images/walls/thumbs_3t/21162.jpg" style="background-image:url('https://4kwallpapers.com/images/walls/thumbs_3t/21162.jpg');"></div>
-        <div class="bg-preview" data-bg="https://4kwallpapers.com/images/walls/thumbs_3t/25881.jpg" style="background-image:url('https://4kwallpapers.com/images/walls/thumbs_3t/25881.jpg');"></div>
-        <div class="bg-preview" data-bg="https://4kwallpapers.com/images/walls/thumbs_3t/11167.jpg" style="background-image:url('https://4kwallpapers.com/images/walls/thumbs_3t/11167.jpg');"></div>
+  <div class="dock-item" onclick="openLibrary()" title="App Library">
+    <div class="icon" style="background:linear-gradient(135deg,#1c1c3e,#2d2d6e); display:grid; grid-template-columns:1fr 1fr; gap:5px; padding:10px;">
+      <div style="background:rgba(255,255,255,0.3); border-radius:4px;"></div>
+      <div style="background:rgba(255,255,255,0.3); border-radius:4px;"></div>
+      <div style="background:rgba(255,255,255,0.3); border-radius:4px;"></div>
+      <div style="background:rgba(255,255,255,0.3); border-radius:4px;"></div>
     </div>
+    <div class="label">App Library</div>
+    <div class="dot"></div>
+  </div>
+
+  <div class="dock-item" onclick="openSettings()" title="Settings">
+    <div class="icon" style="background-image:url('https://upload.wikimedia.org/wikipedia/en/thumb/2/23/System_Preferences_icon.png/250px-System_Preferences_icon.png');"></div>
+    <div class="label">Settings</div>
+    <div class="dot"></div>
+  </div>
+</div>
+
+<!-- APP WINDOWS -->
+<div class="window" id="win-netflix">
+  <div class="window-titlebar">
+    <div class="win-controls">
+      <button class="win-btn win-close" onclick="closeApp('netflix')"></button>
+      <button class="win-btn win-min"></button>
+      <button class="win-btn win-max"></button>
+    </div>
+    <span class="win-title">Netflix</span>
+    <div style="width:52px;"></div>
+  </div>
+  <iframe src="" data-src="https://sunshineduponu.b-cdn.net/embed.html?url=https://mathiscoolz.b-cdn.net/"></iframe>
+</div>
+
+<div class="window" id="win-spotify">
+  <div class="window-titlebar">
+    <div class="win-controls">
+      <button class="win-btn win-close" onclick="closeApp('spotify')"></button>
+      <button class="win-btn win-min"></button>
+      <button class="win-btn win-max"></button>
+    </div>
+    <span class="win-title">Spotify / YouTube Music</span>
+    <div style="width:52px;"></div>
+  </div>
+  <iframe src="" data-src="https://sunshineduponu.b-cdn.net/embed.html?url=https://music.youtube.com/?hl=en"></iframe>
+</div>
+
+<div class="window" id="win-google">
+  <div class="window-titlebar">
+    <div class="win-controls">
+      <button class="win-btn win-close" onclick="closeApp('google')"></button>
+      <button class="win-btn win-min"></button>
+      <button class="win-btn win-max"></button>
+    </div>
+    <span class="win-title">Google</span>
+    <div style="width:52px;"></div>
+  </div>
+  <iframe src="" data-src="https://blockedmath.b-cdn.net/#home"></iframe>
+</div>
+
+<div class="window" id="win-chatgpt">
+  <div class="window-titlebar">
+    <div class="win-controls">
+      <button class="win-btn win-close" onclick="closeApp('chatgpt')"></button>
+      <button class="win-btn win-min"></button>
+      <button class="win-btn win-max"></button>
+    </div>
+    <span class="win-title">ChatGPT / AI Homework Helper</span>
+    <div style="width:52px;"></div>
+  </div>
+  <iframe src="" data-src="https://notegpt.io/ai-homework-helper"></iframe>
+</div>
+
+<div class="window" id="win-discord">
+  <div class="window-titlebar">
+    <div class="win-controls">
+      <button class="win-btn win-close" onclick="closeApp('discord')"></button>
+      <button class="win-btn win-min"></button>
+      <button class="win-btn win-max"></button>
+    </div>
+    <span class="win-title">Discord</span>
+    <div style="width:52px;"></div>
+  </div>
+  <iframe src="" data-src="https://sunshineduponu.b-cdn.net/embed.html?url=https://discord.com"></iframe>
+</div>
+
+<div class="window" id="win-roblox">
+  <div class="window-titlebar">
+    <div class="win-controls">
+      <button class="win-btn win-close" onclick="closeApp('roblox')"></button>
+      <button class="win-btn win-min"></button>
+      <button class="win-btn win-max"></button>
+    </div>
+    <span class="win-title">Roblox</span>
+    <div style="width:52px;"></div>
+  </div>
+  <iframe src="" data-src="https://sunshineduponu.b-cdn.net/embed.html?url=https://nowgg.fun/apps/a/19900/b.html"></iframe>
+</div>
+
+<div class="window" id="win-geforce">
+  <div class="window-titlebar">
+    <div class="win-controls">
+      <button class="win-btn win-close" onclick="closeApp('geforce')"></button>
+      <button class="win-btn win-min"></button>
+      <button class="win-btn win-max"></button>
+    </div>
+    <span class="win-title">GeForce Now</span>
+    <div style="width:52px;"></div>
+  </div>
+  <iframe src="" data-src="https://sunshineduponu.b-cdn.net/embed.html?url=https://play.geforcenow.com"></iframe>
+</div>
+
+<div class="window" id="win-anime">
+  <div class="window-titlebar">
+    <div class="win-controls">
+      <button class="win-btn win-close" onclick="closeApp('anime')"></button>
+      <button class="win-btn win-min"></button>
+      <button class="win-btn win-max"></button>
+    </div>
+    <span class="win-title">Anime</span>
+    <div style="width:52px;"></div>
+  </div>
+  <iframe src="" data-src="https://sunshineduponu.b-cdn.net/embed.html?url=https://senshi.live"></iframe>
+</div>
+
+<div class="window" id="win-blooket">
+  <div class="window-titlebar">
+    <div class="win-controls">
+      <button class="win-btn win-close" onclick="closeApp('blooket')"></button>
+      <button class="win-btn win-min"></button>
+      <button class="win-btn win-max"></button>
+    </div>
+    <span class="win-title">Blooket</span>
+    <div style="width:52px;"></div>
+  </div>
+  <iframe src="" data-src="https://sunshineduponu.b-cdn.net/embed.html?url=https://blooketbot.schoolcheats.net"></iframe>
+</div>
+
+<div class="window" id="win-gta">
+  <div class="window-titlebar">
+    <div class="win-controls">
+      <button class="win-btn win-close" onclick="closeApp('gta')"></button>
+      <button class="win-btn win-min"></button>
+      <button class="win-btn win-max"></button>
+    </div>
+    <span class="win-title">GTA Vice City</span>
+    <div style="width:52px;"></div>
+  </div>
+  <iframe src="" data-src="https://sunshineduponu.b-cdn.net/embed.html?url=https://t9os.space/gtavc"></iframe>
+</div>
+
+<!-- WEB PROXY BROWSER -->
+<div class="window" id="win-browser" style="flex-direction:column;">
+  <div class="window-titlebar">
+    <div class="win-controls">
+      <button class="win-btn win-close" onclick="closeApp('browser')"></button>
+      <button class="win-btn win-min"></button>
+      <button class="win-btn win-max"></button>
+    </div>
+    <span class="win-title" id="browserTitle">Web Browser</span>
+    <div style="width:52px;"></div>
+  </div>
+  <div class="browser-bar">
+    <div class="browser-nav">
+      <button class="nav-btn" onclick="browserBack()" title="Back">&#8592;</button>
+      <button class="nav-btn" onclick="browserForward()" title="Forward">&#8594;</button>
+      <button class="nav-btn" onclick="browserRefresh()" title="Refresh">&#8635;</button>
+    </div>
+    <input class="url-input" id="urlInput" type="text" placeholder="Enter URL or search... (e.g. google.com)" onkeydown="if(event.key==='Enter') navigate()">
+    <button class="go-btn" onclick="navigate()">Go</button>
+  </div>
+  <iframe id="browserFrame" src="about:blank" allowfullscreen></iframe>
+</div>
+
+<!-- APP LIBRARY -->
+<div id="library">
+  <div class="library-header">
+    <span class="library-title">App Library</span>
+    <button class="library-close" onclick="closeLibrary()">&#10005;</button>
+  </div>
+  <input class="library-search" id="librarySearch" type="text" placeholder="&#128269;  Search apps..." oninput="filterLibrary(this.value)">
+  <div class="library-grid" id="libraryGrid"></div>
+</div>
+
+<!-- SETTINGS OVERLAY + PANEL -->
+<div id="settings-overlay" onclick="closeSettings()"></div>
+<div id="settings-panel">
+  <div class="settings-titlebar">
+    <h2>&#9881; Settings</h2>
+    <button class="settings-close-btn" onclick="closeSettings()">&#10005;</button>
+  </div>
+  <div class="settings-body">
+
+    <div class="settings-section">
+      <div class="settings-section-title">Tab Cloak</div>
+      <div class="settings-row">
+        <span class="settings-label">Disguise this tab as:</span>
+        <select class="settings-select" id="tabCloak" onchange="applyCloak(this.value)">
+          <option value="default">Sunshine OS</option>
+          <option value="gmail">Gmail</option>
+          <option value="google">Google</option>
+          <option value="schoology">Schoology</option>
+          <option value="drive">Google Drive</option>
+          <option value="docs">Google Docs</option>
+        </select>
+      </div>
+    </div>
+
+    <div class="settings-section">
+      <div class="settings-section-title">Wallpaper</div>
+      <div class="bg-grid" id="bgGrid"></div>
+    </div>
+
+    <div class="settings-section">
+      <div class="settings-section-title">Web Proxy</div>
+      <div class="proxy-note">
+        The built-in <strong>Browser</strong> app uses a web proxy to bypass restrictions. Click the browser icon in the dock, enter any URL, and browse freely. The proxy automatically routes traffic through a CDN relay.
+      </div>
+    </div>
+
+    <div class="settings-section">
+      <div class="settings-section-title">Keyboard Shortcuts</div>
+      <div style="font-size:13px; color:rgba(255,255,255,0.6); display:flex; flex-direction:column; gap:6px;">
+        <span><kbd style="background:rgba(255,255,255,0.1); padding:2px 7px; border-radius:4px; font-size:11px;">&#96;</kbd> &nbsp;Panic key — redirects to Google</span>
+      </div>
+    </div>
+
+  </div>
 </div>
 
 <script>
-
-function enterOS(){ const startup=document.getElementById("startup"); startup.style.animation="fadeOutStartup 1s ease forwards"; setTimeout(()=>startup.style.display="none",1000); }
-
-
-const cursor=document.getElementById("cursor");
-document.addEventListener("mousemove",e=>{ cursor.style.left=e.clientX+"px"; cursor.style.top=e.clientY+"px"; });
-
-
-function updateTime(){
-    const now=new Date();
-    document.getElementById("time").textContent=now.toLocaleTimeString([], {hour:'2-digit',minute:'2-digit'});
-    document.getElementById("day").textContent=now.toLocaleDateString([], {weekday:'long'}).toUpperCase();
+// ─── STARTUP ────────────────────────────────────────────────────────────────
+function enterOS() {
+  document.getElementById('startup').classList.add('hide');
+  setTimeout(() => document.getElementById('startup').style.display = 'none', 1000);
 }
-setInterval(updateTime,1000);
-updateTime();
 
+// ─── CURSOR ─────────────────────────────────────────────────────────────────
+const cursor = document.getElementById('cursor');
+document.addEventListener('mousemove', e => {
+  cursor.style.left = e.clientX + 'px';
+  cursor.style.top = e.clientY + 'px';
+});
+document.addEventListener('mousedown', () => cursor.classList.add('clicking'));
+document.addEventListener('mouseup', () => cursor.classList.remove('clicking'));
 
-document.addEventListener("keydown", e=>{ if(e.key==='`'){ window.location.href="https://www.google.com"; } });
+// ─── CLOCK ──────────────────────────────────────────────────────────────────
+function updateClock() {
+  const now = new Date();
+  const time = now.toLocaleTimeString([], { hour: '2-digit', minute: '2-digit' });
+  const date = now.toLocaleDateString([], { weekday: 'long', month: 'long', day: 'numeric' });
+  document.getElementById('clockTime').textContent = time;
+  document.getElementById('clockDate').textContent = date.toUpperCase();
+  document.getElementById('menuTime').textContent = now.toLocaleTimeString([], { weekday: 'short', month: 'short', day: 'numeric', hour: '2-digit', minute: '2-digit' });
+}
+setInterval(updateClock, 1000);
+updateClock();
 
-
-document.querySelectorAll('.app').forEach(app=>{
-    app.onclick=()=>{
-        const id=app.dataset.app;
-        if(id==='settings') return openSettings();
-        const win=document.getElementById(id);
-        if(win) win.classList.add('show');
-
-
-        if(cloaks[id]){
-            document.title = cloaks[id].title;
-            const link = document.querySelector("link[rel~='icon']") || document.createElement('link');
-            link.rel = 'icon';
-            link.href = cloaks[id].icon;
-            document.getElementsByTagName('head')[0].appendChild(link);
-        }
-    };
+// ─── PANIC KEY ──────────────────────────────────────────────────────────────
+document.addEventListener('keydown', e => {
+  if (e.key === '`') window.location.href = 'https://www.google.com';
 });
 
+// ─── APP MANAGEMENT ─────────────────────────────────────────────────────────
+const openApps = new Set();
 
-document.querySelectorAll('.close-btn').forEach(btn=>{ btn.onclick=()=>{ btn.parentElement.classList.remove('show'); }; });
+function openApp(id) {
+  if (id === 'settings') { openSettings(); return; }
+  if (id === 'browser') { openBrowser(); return; }
+  const win = document.getElementById('win-' + id);
+  if (!win) return;
+  const iframe = win.querySelector('iframe');
+  if (iframe && !iframe.src) iframe.src = iframe.dataset.src || '';
+  win.classList.add('show');
+  openApps.add(id);
+  const dot = document.getElementById('dot-' + id);
+  if (dot) dot.parentElement.classList.add('running');
+}
 
+function closeApp(id) {
+  const win = document.getElementById('win-' + id);
+  if (!win) return;
+  win.classList.remove('show');
+  const iframe = win.querySelector('iframe');
+  if (iframe) iframe.src = '';
+  openApps.delete(id);
+  const dot = document.getElementById('dot-' + id);
+  if (dot) dot.parentElement.classList.remove('running');
+}
 
-const fullscreenApps = document.querySelectorAll(".fullscreen-app");
-fullscreenApps.forEach(app => {
-    const iframe = app.querySelector("iframe");
-    if (iframe) {
-        app.dataset.src = iframe.src; 
-    }
-});
+// ─── WEB PROXY BROWSER ──────────────────────────────────────────────────────
+const PROXY = 'https://sunshineduponu.b-cdn.net/embed.html?url=';
 
+function openBrowser(url) {
+  const win = document.getElementById('win-browser');
+  win.classList.add('show');
+  openApps.add('browser');
+  const dot = document.getElementById('dot-browser');
+  if (dot) dot.parentElement.classList.add('running');
+  if (url) loadUrl(url);
+}
 
+function navigate() {
+  let val = document.getElementById('urlInput').value.trim();
+  if (!val) return;
+  loadUrl(val);
+}
 
+function loadUrl(val) {
+  if (!val.includes('.') && !val.startsWith('http')) {
+    val = 'https://www.google.com/search?q=' + encodeURIComponent(val);
+  } else if (!val.startsWith('http')) {
+    val = 'https://' + val;
+  }
+  document.getElementById('urlInput').value = val;
+  document.getElementById('browserTitle').textContent = val;
+  document.getElementById('browserFrame').src = PROXY + encodeURIComponent(val);
+}
 
-const apps = document.querySelectorAll(".app");
-apps.forEach(app => {
-    app.addEventListener("click", () => {
-        const appName = app.getAttribute("data-app");
-        const appDiv = document.getElementById(`fullscreen-${appName}`);
-        if (appDiv) {
-            const iframe = appDiv.querySelector("iframe");
-            if (iframe) iframe.src = appDiv.dataset.src; 
-            appDiv.classList.add("show");
-        }
-    });
-});
+function browserBack() { document.getElementById('browserFrame').contentWindow?.history.back(); }
+function browserForward() { document.getElementById('browserFrame').contentWindow?.history.forward(); }
+function browserRefresh() {
+  const f = document.getElementById('browserFrame');
+  f.src = f.src;
+}
 
-
-const closeButtons = document.querySelectorAll(".close-btn");
-closeButtons.forEach(btn => {
-    btn.addEventListener("click", () => {
-        const parentApp = btn.parentElement; 
-        const iframe = parentApp.querySelector("iframe");
-        if (iframe) iframe.src = ""; 
-        parentApp.classList.remove("show"); 
-    });
-});
-
-
-document.querySelectorAll(".fullscreen-app").forEach(app => {
-    const iframe = app.querySelector("iframe");
-    if (iframe) app.dataset.src = iframe.src; 
-});
-
-
-document.querySelectorAll(".app").forEach(app => {
-    app.addEventListener("click", () => {
-        const appName = app.getAttribute("data-app");
-        const appDiv = document.getElementById(`fullscreen-${appName}`);
-        if (appDiv) {
-            const iframe = appDiv.querySelector("iframe");
-            if (iframe) iframe.src = appDiv.dataset.src; 
-            appDiv.classList.add("show");
-        }
-    });
-});
-
-// Close button
-document.querySelectorAll(".close-btn").forEach(btn => {
-    btn.addEventListener("click", () => {
-        const parentApp = btn.closest(".fullscreen-app");
-        parentApp.classList.remove("show");
-        const iframe = parentApp.querySelector("iframe");
-        if (iframe) {
-
-            iframe.src = parentApp.dataset.src;
-        }
-    });
-});
-
-
-const library=document.getElementById("library");
-const grid=document.getElementById("libraryGrid");
-function openLibrary(){library.classList.add("show");}
-function closeLibrary(){library.classList.remove("show");}
-
-
-grid.innerHTML = "";
-const allApps = [
-    ...document.querySelectorAll(".dock .app"),
-    { id: "blooket", img: "data:image/jpeg;base64,/9j/4AAQSkZJRgABAgAAAQABAAD/2wBDAAgGBgcGBQgHBwcJCQgKDBQNDAsLDBkSEw8UHRofHh0aHBwgJC4nICIsIxwcKDcpLDAxNDQ0Hyc5PTgyPC4zNDL/2wBDAQkJCQwLDBgNDRgyIRwhMjIyMjIyMjIyMjIyMjIyMjIyMjIyMjIyMjIyMjIyMjIyMjIyMjIyMjIyMjIyMjIyMjL/wAARCAGAAYADASIAAhEBAxEB/8QAHwAAAQUBAQEBAQEAAAAAAAAAAAECAwQFBgcICQoL/8QAtRAAAgEDAwIEAwUFBAQAAAF9AQIDAAQRBRIhMUEGE1FhByJxFDKBkaEII0KxwRVS0fAkM2JyggkKFhcYGRolJicoKSo0NTY3ODk6Q0RFRkdISUpTVFVWV1hZWmNkZWZnaGlqc3R1dnd4eXqDhIWGh4iJipKTlJWWl5iZmqKjpKWmp6ipqrKztLW2t7i5usLDxMXGx8jJytLT1NXW19jZ2uHi4+Tl5ufo6erx8vP09fb3+Pn6/8QAHwEAAwEBAQEBAQEBAQAAAAAAAAECAwQFBgcICQoL/8QAtREAAgECBAQDBAcFBAQAAQJ3AAECAxEEBSExBhJBUQdhcRMiMoEIFEKRobHBCSMzUvAVYnLRChYkNOEl8RcYGRomJygpKjU2Nzg5OkNERUZHSElKU1RVVldYWVpjZGVmZ2hpanN0dXZ3eHl6goOEhYaHiImKkpOUlZaXmJmaoqOkpaanqKmqsrO0tba3uLm6wsPExcbHyMnK0tPU1dbX2Nna4uPk5ebn6Onq8vP09fb3+Pn6/9oADAMBAAIRAxEAPwDn6KO1FcJ8SmFFFFArhRRRSC4UUUUILhRRRTC4UUuKSkFwooopjuFFFFSAUUUUAFFFFMAopcUHikFxKKKKAuFFFFAXCiiiqFcKKKXFA7iUUUUEoKKKKCrhRRRQFwooooC4UUUUCuFFFFA7hRRRQFwooopDCiiigTCiiihALmkoophYKKKKACiiigTQUUUUmCQuaTNFFFx2Ciiii4rBRRRQUFGaKKEAUoNJRQwFzSZoooQrCg0vWm0UwsLwKSiikKwUUUUBYKM0UUxhRRRSAKKKKYWCiiigLBRRRQSFFFFJlIKKKKQBRRRVCsFFFFA+gUUUUCCiiikhoKKKKGFwooooAKKKKYmFFFFIAooooC4UUUUgTCiiigoKKKKACiiigAooopoVwpTSUuaLiuJRRRQO4UUUUCuFFFFFwuFFFFFw3CiiigdgooopiQUUUUCCiiigpBRRRQDYUUUUBcKKKKBBRRRQDCiiikO2gUUUUxIKKKKBsKKKKCQoopCMikwGs+OlN800pjJ6A00wuexqW2NIXzaPNpvkyeh/KjyZP7pqLsfKO82jzab5L/3TR5Mn900XYWHebR5tN8mT+6fyo8mT+6fyp3Yco7zaPNpvkyeh/KjyZPQ/lSuw5WO82jzab5Mnofyo8mT+6fyouw5R3m0ebTfJk/un8qPJk9D+VF2HKx3m0ebTfJk9D+VHkyf3T+VF2HKO82jzab5Mn90/lR5Mnofyouw5R3m0ebTfJk/un8qPJk/umi7DlHebSh8nrTPKcHkH8qXYw7VSbE0S7qWmDpSg4qhjqKKKACiiimFgooopiYUUUUCCiiigdgooooAKKKKBMKKKKRQUUUUCsFFFFA7BRRRQwsMZsGnxfMwFQufmNTWY3Sil1sEdWa9rYGUDitWLQt4+7VvRrcOq8ZrtbKwQqvFbRhdHr4fCqaucSvhsnkJTj4ZOPufpXpcOnJjoKnOmIR92r9kjs/s+J5X/AMI0f7tH/COH+4K9QbTEP8NN/sxf7tHskH1CJ5j/AMI4f7go/wCEbP8AcH5V6d/Zi/3aUaYg/ho9kg+oRPMf+EbP9wUf8I2f7len/wBmp/do/s1P7tHs0H1GJ5h/wjZ/uCj/AIRs/wBwV6f/AGan92j+zU/u0ezQfUYnmA8N/wCxS/8ACN/7P6V6d/Zqf3aP7NT+7R7NB9RieY/8I1/sfpSHw2f7gr0/+zU/u0f2an92j2aD6jE8w/4Rs/3BR/wjZ/uCvT/7NT+7R/Zqf3aPZoPqMTzD/hGz/cFI3hwgfcr1D+zU/u0jaamPu0ezQvqETyWXQSoPyVm3GltHnC16/PpKEH5aw73RBzhal0jGpgdNDyqW2KHpVZhtPNd3qGhnkha5y70t42Py1k4tHnVcO4mNTgafJAyGoiMVJytW0H0U0GnU0AUUUUxBRRRQLoFFFFA+gUUUUEhRRRSAKKKKZYUUUUAFFFFABRRRSYmV5PvGrNj/AK0VWk+9Vmx/1orP7Q47nf6AOFFd9YfdFcFoPVa7/Tx8orsp7H0mC+E14VGOlT4qKL7tTCtz0RmB6UbR6U+igBm0elG0elPooAZtHpS7R6U6igBm0elG0elPpDQA3aPSjaPSlooATaPSjaPSlooATaPSjaPSnYpKAE2j0o2j0paXFAETRBu1VZbRWzxV/FJigTSZz11pauOFrnNS0UEHC16C8YYdKoXNoHB4qHFMwqUFJHjmpaUY92FrnbiAoxyDXrmraWCG+XNcDq1gY2bC1zzhY8XFYbl2OYpw6U6WPYxqOsjzLWH0UUU0AUUUUAFFFFMQUUUUBYKKKKQmFFFFBQUUUUAFFFFMAo60UUmJleT71WbH/Wj61Wf71WbH/Wj61n9ocdz0DQeq131gflFcBoBztrvrD7orsp7H0mC+E2ojxU9QQ9KmFbnoi0UUUAFFFFABRRQTigAPSm5ozSMwFAC0VC0wHeo/tIz1oFctUVWE49alWUGgZLmjqKbkGnA0ALiiiigAooooAbTWXcMVJikIoAyb21EiniuH1zTxhiFr0eZNwrm9YtQyscVnNXOXEUlKJ49qFtsY8VlkEV12tWu124rlpkw9cslZnzlenZka9KWkXpS0kc4UUUUAFFFFMAooopAFFFFDJYUUUUygooooAKKKKACiiigTK8n3qs2P+tH1qtJ96rNj/rR9ay+0OO53/h/old9YfdFcD4f6JXfWH3RXZT2Po8H8JtQ9KmFQw9KmFbnpIWiiigAooooAQmkpcUlAAelVLibaOatP9w1kX8hCGk9iZOyKd1qCxk5NZkmtKrcsKyNXvGUtzXKXOpuHPzVhKdjza2J5Weiw62rEDcK1bXURJjBryGDWGDferpdL1fcV+Y/nQql9ApYu7PToZgwHNWQciuc06+8wDmt2GQECtkz0YS5kWBS00U6qLCiiigApDS0HpQAxvu1kajGCh9a2Kzr1fkNJ7Ez2PN9eg5Y4rhrxNrmvR9djHzVwGoLhzXJU3PAxkbMy+hpaTv8ASlrM8sKKKKoAooooE2FFFFArhRRRSsMKKKKYwooopAFFFFMAooo7GgTIH6mrFj/rR9arSdasWP8ArhWX2hx3PQPD/RK76w+6K4Hw/wBErvrD7ortp7H0eD+E2oelSjrUUPSpR1rY9FDqKKKBhRRRQAnekPWnGm4oAa/3DWNqI+Q1sv8AcrG1H7hpPYiex5/rf3nriL5juNdxrfVq4a+++a5Jnz+LepQWUq3WtzS7phIvNc+eprU0zPmLWcXqcdGTUj1DRbgsq812Vm+VFcFoGcLXdWP3RXZDY+kw0m0aQORTgaav3aUVodY6iiigAoopDQAlUbv7hq9VG7OENJilscRro+9XnupD52r0LXW+9XnupH52rmqHhYwx26mlHSkbqaUdKyR5DFooopgFFFFABRRRQIKKKKAYUUUUhhRRRTAKKKKAFApDRRSYmV5PvfjVmx/1o+tV5OpqxY/60Vn9ocd0d/oAxtrvrD7orgtB6rXe2H3RXbSPpMF8JtQ9KlHWooelSjrWx6I6iiigAooooAQ0E5opKAGv9ysbUfuGtl/uGsi/UlDSexE9jz7W/wCKuGvvvmu/1mAsW4rjbyzYueK5ah4OLi2zACktW3pUJLjI9Kjh05yw4zXT6RphyuVrOEdTmoUG5HSaFBgKcV2douFFYmlWewLxXRwR7RXZFWPoqEOVE44FOFJSirOgWiiigApDSnim0AIxwprNvWwpNaEjYHWsLVLgKh5pPYibsjkddm+9zXA6g+XNdVrdzlm5zXG3b7nPNck3dnz+LqXZUPJpw6U0CnVCPNCiiimAUUUUAFFFFAgooooE2FFFFBQUUUUAFFFFABRRRSYmQSdTVix/1o+tVpPvfjVmx/1o+tZ/aHHc9A0DnbXe2H3RXA6D/Diu+0/7grsp7H0eC+E2oelSjrUUPSpa3PSHUUUUAFFFFABSGlooAYRkVSuYdykGr1NZd1AmrnIX+neZnisKbQ9zfd/SvQZbYN25qA2Kk9KzcLnNPDqW5wsOg4YZWt6w0oRgfLW6tigPSrMVuFoULBDDqJDa24QDir6gAcUiqBTqtI6UrBTqQUtMYUmaWm0AFNZsClPAqlc3GwGgTdtxLm52Kea5PWb4YbmrGp6mEB+auJ1bVNxbDVlOWhwYmvZWMvVbrc55rn5DubNWLm4Lse9VOtcrdzwK0+ZjhwKWiihGIUUUUwCiiigAooooAKKKKQgooopjCiiigAoHWiigBTSUUUhMryfeNWbH/Wiq0n3jVmx/1orP7Q47noGg9VrvbD7orgtB/hrvbD7ortpH0mC+E2oelS1FD0qWtj0R1FA6UUAFFFFABRRRQAUhpaKAG4pNo9KWigBNo9KXFFGKAClAoApaACiiigBDSUp60lADJTgVh6k5CnFbkgytY9/CXU0mRUWh55rVy4LcmuKvbh2c5Jrv9Y05m3HFcXfaeysTiuSd7ngYqMjF35PNOXNK8RQ0lZnmO/UfRRRTQBRRRTAKKKKBBRRRQMKKKKBBRRRQCCiiigYUUUUAFFFFJiK8n3qs2P8ArRVaT71WLE/vqz+0OO56BoXRfpXfaf8AcFcDoP8ADmu+sPuiu2kfR4L4Tah6VLUUPSpa2PSHDpRQKKACiiigAoopCaAFpuaKCcUAFFRmUCmed70AT0uagEw9akDA0ASUU2igB1FFFABSEUtFADaglgDCrGKSgDnr7Tg4PFchq+kABsCvSpYgwrD1KzVkPFRKNzmr0VJHjWo2Rjc8VkMpU4rvNc0/DNxXHXcXlua5ZKx89iKXKymD2p1NxhqdUHIFFFFNAFFFFFwCiiimSwooopXGFFFFAIKKKKYwooooAKKKKTAryfeqxYj98KryfeqxY/66s/tDjueg6D1Wu9sPuiuC0H+Gu9sPuiu2lsfRYL4Tah6VKOtRQ9KlrY9IdRRRQAUUUUAB6U2nU2gAqCWXaOuKmY4XNZV7KVVqTJk7EdxehMjNZ76uob7wrD1TUShbnmuWudZKufm/WspTscNXE8rPSYdVRj96tKC9V8fNXklvrp3DLY/Gun0vV92Pm/WhVEwpYtSdj0OOUMKlrEsr0Oo+ataJ9wrVM7oyuiUU6m04dKZQUUUUAFIRS0UANqldxblPFXiKhlXNAnscPrVmGB4rz3VrbYzcV61qsGc8V55rdthm4rnqI8nGUtDi2XD0lTXC4c1DXOeE1ZhRRRTEFFFFFgCiiigQUUUUAFFFFMSCiiigoKKKKACiiikxMryfeqxY/wCuqvJ96p7L/XD61n9ocT0Hw/0Wu+sPuiuB8P8ARa76w+6K7Kex9HgvhNqHpUwqGHpUo61uekOooooAKKKKACgjNFFADH+4aw9R+4a3H+4aw9R+6alkT2PP9bJBb8a4q8c7zz3rtdc6t+NcPej5zXJU3PnsW9SvHcFW61v6VflXX5q5c9a0dPciQCoi9TlpVGpHq2jXm8LzXX2km5RXnegOcLXfWBOwV2Q2Po8NJtGqDkU4Gmr90UtaHWOooooAKKKKAENMcZFPNNb7tAGRfplTXA67CPmr0K8GQa4bXV4asp7HDiloeeXq7WNUQa0tQXEhrOxXIz5yr8QUUUU0ZhRRRQAUUUUwCiiikAUUUUxBRRRQJBRRRQUKKSiigRXk+9U9l/rh9agk+9Vix/11ZfaHHc9A0DjbXfWH3RXBaD1Wu9sPuiuynsfR4L4Tah6VMKhh6VOK3PSCiiigAooooAKKKKAGP9w1iagcI1bT/cNYuoj5DUsiex5/rv3mrh737xrudcQktXF3kLFzgVyVL3Pn8WncyD1rS06MlwarpasX6Gug0qwYsvy1EVqclGm3I6vQIiAtd3YKdo9a5vRrPaq/LiustY9qiuyGx9HhoWjqXV+6KcKaBinCtDrFooooAKKKKAENNbgU401vu0AZl70NcPrp4au2vm+Rq4PXX4bmsp7HDin7pw2oH5zWbV++b5jVDOa5GfOVfiCiiimjMKKKKYBRRRSuAUUUUCCiiimSFFFFBSCiiigYUjdKWkbpSEQP96rFj/rqrv8AeqxY/wCurP7Q47noOg9VrvbD7orgtB6rXe2H3RXZT2PpMF8JtQ9KnqCHpU9bnohRRRQAUUUUAFFFFADGHy4rMvItymtU1BJEGFJkyVzhtS04uT8prnZ9ELMflr02azV+1U201Sfu1k4XOOphlI88h0E5+6fyre07RwhHy10yaaoxwKuRWarjAoVNIIYVRK9lZ+Wo4rXjTaKSOIKKlrVKx2RjZBTgKQUtMoKKKKACg9KKbQAUyQ8U+q874BNAGTqUgCkV59rk/Lc12Or3G0GvOtZuQZG5rCo9DysZU0Odu3y5qsOpp0zbnpi1zM8CTux1FFFNCCiiigAoooosAUUUUCCiiimJMKKKKBhRRRQAUUUh6UgZBJ96p7H/AFw+tQP96rFj/rqz+0OJ6DoPVa77T/uiuB0H+Gu9sPuiuynsfR4N+6bUVTioIelTCtz0kLRRRQAUUUUAFFFFABTSKdRQBGUBpvlCpsUmKAIvKFPCgdKdijFACUYp2KKACiiigAopM0lACk5pKKaWxQAM2AazL2fapOasXFwFBJNczq2ohEbBqZMyqTUUY2t33Lc1wOpXG9zzWxq9/vc81y88hdya5Zu589iq3MyInJzSjpTaeOlZnAFFFFMAooooAKKKKYgooopCYUUUUxBRRRQAUUUUDQUh6UtIRkUmNkD/AHqsWP8Arqrv96rFkP3o+tRbUcTv9BPC13unn5BXA6F0Wu9sPurXZT2PocHsbsJ+UVMKrwHAGTU9bHqDqTNNLAd6NwxnNAD6Kj3il3D1oAdmlpm4etG4etAD6KZuHrQWA70AOzRmm7h60bh60AOzRmm7h60bh60APzSZpm8UbxQA/NJmmbx60hlxQBJQTiqr3AHeoJL1V7ilcTaRdeUKOKpXF0EByazrnVFUH5qwL7WlwfmFS5WMKleMTQ1HU9gPNcVq2qF9wDVDqOr7gcNXNXV2ZW61hOdzyMTir6DLu5LtVPOaUkk80gGaxPKlJyd2PooopoQUUUUxBRRRQKwUUUUA2FFFFIQUUUUDWwUUUUxBRRRQNBRRRSGyFx8xqez4lFRsuTT4fkbNTbUIvU7fRpwgXnFdrZXqBRzXlNrfmIDmtWLXyn8eK3jO2h6+HxSgrHq8N+gHJ/Wp21JMferytPE2B9+nHxRx9/8AWr9qdv1+J6c2pJj71A1Jcfery7/hJs/xfrSf8JMf7/60e1F/aEe56n/aSf3qP7ST+9Xln/CTH+/Th4lP9+l7YPr8T1H+0k/vUf2kn96vL/8AhJv9uk/4Sb/bp+2BY+J6j/aSf3qP7ST+9Xl3/CTf9NP1o/4SY/3/ANaPaj+vxPUf7ST+9R/aSf3q8u/4SY/3/wBaD4mP9/8AWj2wvr8T1H+0kH8VN/tRf7w/OvLv+EmP9/8AWj/hJT/fo9sH1+Pc9Q/tJP7360f2kn94V5f/AMJKf79IfEhP8dL2wfX49z05tUT+9+tVZNYQZ+avN28RE/xVXk15j/HQ6xEsej0KbXFAPzc1lXWvjB+auHk1hm/iqpLqDP3qXUOaeOvsdLea4xz8xrCutUdifmrMe4Zj1qAsW61m5NnFUxEpE0twznrUBOaKcBUnO22IBTqKKYgooopiCiiigVwooooHcKKKKBMKKKKQgooooRQUUUUXGFFFFArhRRRTC4UUUUrDI2YjvTDI3941KVGKb5ftUtE3YzzH/vGk8x/7xp/lUeVU8r7lXGea/qaXzH/vGneVR5VHK+4XGeY/940eY/8AeNP8qjyqXK+4XYzzH/vGjzH/ALxp/lUeVT5X3DmGeY/940eY/wDeNP8AKo8qjlfcLsZ5j/3jR5j/AN40/wAqjyqOV9wuxvmP/eNJ5j/3jT/Ko8qjlfcLjPMf+8aPMf8AvGn+VR5VHK+4XGeY/wDeNG9/7xp/lUCPHanysG2NDMe9PGaUJjmnAYpom7EAzTgMUUUygooopgFFFFMAooooJYUUUUAFFFFAwooooEwooooEFFFFJDQUUUUigooopiYUUUUxWCiiigaCiiigAooooGFFFFIQUUUUxhRRRQIKXikooGL2pKKKACiiikAUUUUAFFFFABRRRSAKKKKYBRRRTAKKKKCUFFFFA2FFFFAJBRRRQAUUUUiQooooBhRRRQikFFFFABRRRQFwooopjCiiikAUUUUwCiiilcAooooAKKKKACiiimAUUUUgCiiimAUUUUgCiiigAooopAFFFFOwgooophcKKKKSGFFFFMAooooEFFFFIAooooC4UUUUxaBRRRSBhRRRRYoKKKKBWCiiigLBRRRTAKKKKVgCiiimAUUUUrDCiiihAFFFFMAooo4oAKKKKACiiigAooooAKKXIpDQAUUUUgCiiigAooooAKKKKYBRRRQKwUUUUBYKKKKTAKKKKAsFFFFMVgooopMLH//Z" },
-    { id: "gta", img: "https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcR3w1PK7yW2YbG76OJw1XPe1ke99ucQ93B9nUmNEmXghYGKghLI4BpStc2Y7GPMkiE35ReSCkUnNO6E7FvwZIU-fDXpVk7OaeiJF6RhKDl05BIZf3qWdu8W-TLuWaaeHYk&s=10" }
+// ─── APP LIBRARY ────────────────────────────────────────────────────────────
+const ALL_APPS = [
+  { id: 'browser', name: 'Browser', icon: '🌐', color: 'linear-gradient(135deg,#4fc3f7,#0288d1)' },
+  { id: 'netflix', name: 'Netflix', img: 'https://upload.wikimedia.org/wikipedia/commons/thumb/7/75/Netflix_icon.svg/500px-Netflix_icon.svg.png', color: '#000' },
+  { id: 'spotify', name: 'Spotify', img: 'https://cdn.pixabay.com/photo/2016/10/22/00/15/spotify-1759471_1280.jpg' },
+  { id: 'google', name: 'Google', emoji: 'G', color: 'linear-gradient(135deg,#4285F4,#34A853,#FBBC05,#EA4335)' },
+  { id: 'chatgpt', name: 'ChatGPT', img: 'https://uxwing.com/wp-content/themes/uxwing/download/brands-and-social-media/chatgpt-icon.png', color: '#10a37f' },
+  { id: 'discord', name: 'Discord', img: 'https://assets-global.website-files.com/6257adef93867e50d84d30e2/636e0a6a49cf127bf92de1e2_icon_clyde_blurple_RGB.png', color: '#5865F2', bgSize: '70%' },
+  { id: 'roblox', name: 'Roblox', img: 'https://upload.wikimedia.org/wikipedia/commons/thumb/f/f2/Roblox_%282025%29_%28App_Icon%29.svg/250px-Roblox_%282025%29_%28App_Icon%29.svg.png' },
+  { id: 'geforce', name: 'GeForce Now', img: 'https://play-lh.googleusercontent.com/_-b_HQXrVyyhZSHj_BoE9u_-cxkcHDH_yLX5rDjJsFMIfsCNQs9F3QP4JvEFcWaSIz0=w240-h480-rw' },
+  { id: 'anime', name: 'Anime', icon: '🎌', color: 'linear-gradient(135deg,#ff6b9d,#c44bff)' },
+  { id: 'blooket', name: 'Blooket', emoji: 'B', color: 'linear-gradient(135deg,#00c9ff,#92fe9d)' },
+  { id: 'gta', name: 'GTA Vice City', img: 'https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcR3w1PK7yW2YbG76OJw1XPe1ke99ucQ93B9nUmNEmXghYGKghLI4BpStc2Y7GPMkiE35ReSCkUnNO6E7FvwZIU-fDXpVk7OaeiJF6RhKDl05BIZf3qWdu8W-TLuWaaeHYk&s=10' },
+  { id: 'psify', name: 'PlayStation', img: 'https://upload.wikimedia.org/wikipedia/commons/9/91/PlayStation_App_Icon.jpg' },
 ];
 
-allApps.forEach(app => {
-    const clone = document.createElement("div");
-    clone.className = "library-app";
-    if(app.dataset){ clone.style.backgroundImage = app.style.backgroundImage; clone.dataset.app = app.dataset.app; }
-    else { clone.style.backgroundImage = `url(${app.img})`; clone.dataset.app = app.id; }
-    clone.onclick = ()=>{ library.classList.remove("show"); document.querySelector(`.app[data-app='${clone.dataset.app}']`)?.click() || openApp(clone.dataset.app); };
-    grid.appendChild(clone);
-});
-
-
-function openSettings(){ document.getElementById('settings').classList.add('show'); }
-
-
-let currentCloak = "default";
-
-
-const cloaks = {
-    default: {
-        title: "Sunshine OS",
-        icon: "https://clear-peach-ksmzmdcnda.edgeone.app/1000009614.jpg"
-    },
-    gmail: {
-        title: "Gmail",
-        icon: "https://ssl.gstatic.com/ui/v1/icons/mail/rfr/gmail.ico"
-    },
-    google: {
-        title: "Google",
-        icon: "https://www.google.com/favicon.ico"
-    },
-    schoology: {
-        title: "Home | Schoology",
-        icon: "https://asset-cdn.schoology.com/sites/all/themes/schoology_theme/favicon.ico"
+function buildLibraryGrid(filter = '') {
+  const grid = document.getElementById('libraryGrid');
+  grid.innerHTML = '';
+  ALL_APPS.filter(a => a.name.toLowerCase().includes(filter.toLowerCase())).forEach(app => {
+    const el = document.createElement('div');
+    el.className = 'library-app';
+    const icon = document.createElement('div');
+    icon.className = 'library-app-icon';
+    if (app.img) {
+      icon.style.backgroundImage = `url(${app.img})`;
+      if (app.color) icon.style.backgroundColor = app.color.startsWith('linear') ? '' : app.color;
+      if (app.bgSize) { icon.style.backgroundSize = app.bgSize; icon.style.backgroundRepeat = 'no-repeat'; icon.style.backgroundPosition = 'center'; }
+    } else if (app.icon) {
+      icon.style.background = app.color || '#333';
+      icon.style.display = 'flex'; icon.style.alignItems = 'center'; icon.style.justifyContent = 'center';
+      icon.style.fontSize = '32px';
+      icon.textContent = app.icon;
+    } else {
+      icon.style.background = app.color || '#333';
+      icon.style.display = 'flex'; icon.style.alignItems = 'center'; icon.style.justifyContent = 'center';
+      icon.style.fontSize = '22px'; icon.style.fontWeight = '700'; icon.style.color = 'white';
+      icon.textContent = app.emoji || '?';
     }
+    const name = document.createElement('div');
+    name.className = 'library-app-name';
+    name.textContent = app.name;
+    el.appendChild(icon);
+    el.appendChild(name);
+    el.onclick = () => { closeLibrary(); openApp(app.id); };
+    grid.appendChild(el);
+  });
+}
+
+function filterLibrary(q) { buildLibraryGrid(q); }
+function openLibrary() {
+  buildLibraryGrid();
+  document.getElementById('library').classList.add('show');
+  setTimeout(() => document.getElementById('librarySearch').focus(), 200);
+}
+function closeLibrary() {
+  document.getElementById('library').classList.remove('show');
+  document.getElementById('librarySearch').value = '';
+}
+
+// ─── SETTINGS ────────────────────────────────────────────────────────────────
+const cloaks = {
+  default:   { title: 'Sunshine OS',     icon: '' },
+  gmail:     { title: 'Inbox (1) - Gmail', icon: 'https://ssl.gstatic.com/ui/v1/icons/mail/rfr/gmail.ico' },
+  google:    { title: 'Google',           icon: 'https://www.google.com/favicon.ico' },
+  schoology: { title: 'Home | Schoology', icon: 'https://asset-cdn.schoology.com/sites/all/themes/schoology_theme/favicon.ico' },
+  drive:     { title: 'My Drive - Google Drive', icon: 'https://ssl.gstatic.com/docs/doclist/images/drive_2022q3_32dp.png' },
+  docs:      { title: 'Untitled document - Google Docs', icon: 'https://ssl.gstatic.com/docs/documents/images/kix-favicon7.ico' },
 };
 
-
-function applyCloak(type){
-    const cloak = cloaks[type];
-    if(!cloak) return;
-
-
-    document.title = cloak.title;
-
-
-    const oldIcon = document.querySelector("link[rel='icon']");
-    if(oldIcon) oldIcon.remove();
-
-
-    if(cloak.icon){
-        const link = document.createElement("link");
-        link.rel = "icon";
-        link.href = cloak.icon;
-        document.head.appendChild(link);
-    }
-
-    currentCloak = type;
+function applyCloak(type) {
+  const c = cloaks[type];
+  if (!c) return;
+  document.title = c.title;
+  let link = document.querySelector("link[rel='icon']");
+  if (!link) { link = document.createElement('link'); link.rel = 'icon'; document.head.appendChild(link); }
+  link.href = c.icon || '';
 }
 
-
-document.getElementById("tabCloak").addEventListener("change", e=>{
-    applyCloak(e.target.value);
-});
-
-
-applyCloak("default");
-
-
-document.querySelectorAll(".bg-preview").forEach(preview=>{
-    preview.onclick = () => { document.body.style.backgroundImage = `url(${preview.dataset.bg})`; };
-});
-
-
-function openApp(id){
-    const win=document.getElementById(id);
-    if(win) win.classList.add('show');
-
-
-    if(cloaks[id]){
-        document.title = cloaks[id].title;
-        const link = document.querySelector("link[rel~='icon']") || document.createElement('link');
-        link.rel = 'icon';
-        link.href = cloaks[id].icon;
-        document.getElementsByTagName('head')[0].appendChild(link);
-    }
+function openSettings() {
+  document.getElementById('settings-overlay').classList.add('show');
+  document.getElementById('settings-panel').classList.add('show');
 }
+function closeSettings() {
+  document.getElementById('settings-overlay').classList.remove('show');
+  document.getElementById('settings-panel').classList.remove('show');
+}
+
+// Build wallpaper grid
+const wallpapers = [
+  'https://4kwallpapers.com/images/walls/thumbs_3t/22088.jpg',
+  'https://4kwallpapers.com/images/walls/thumbs_3t/25505.jpg',
+  'https://4kwallpapers.com/images/walls/thumbs_3t/25476.jpg',
+  'https://4kwallpapers.com/images/walls/thumbs_3t/26070.jpg',
+  'https://4kwallpapers.com/images/walls/thumbs_3t/24058.jpg',
+  'https://4kwallpapers.com/images/walls/thumbs_3t/21436.jpg',
+  'https://4kwallpapers.com/images/walls/thumbs_3t/21314.jpg',
+  'https://4kwallpapers.com/images/walls/thumbs_3t/21162.jpg',
+  'https://4kwallpapers.com/images/walls/thumbs_3t/25881.jpg',
+  'https://4kwallpapers.com/images/walls/thumbs_3t/11167.jpg',
+];
+
+const bgGrid = document.getElementById('bgGrid');
+wallpapers.forEach((url, i) => {
+  const el = document.createElement('div');
+  el.className = 'bg-thumb' + (i === 0 ? ' active' : '');
+  el.style.backgroundImage = `url(${url})`;
+  el.onclick = () => {
+    document.body.style.backgroundImage = `url(${url})`;
+    document.querySelectorAll('.bg-thumb').forEach(t => t.classList.remove('active'));
+    el.classList.add('active');
+  };
+  bgGrid.appendChild(el);
+});
+
+// Init cloak
+applyCloak('default');
+
+// ─── PSIFY WINDOW (psify not in dock, only in library) ──────────────────────
+// Add missing window for psify
+const psifyWin = document.createElement('div');
+psifyWin.className = 'window';
+psifyWin.id = 'win-psify';
+psifyWin.innerHTML = `<div class="window-titlebar"><div class="win-controls"><button class="win-btn win-close" onclick="closeApp('psify')"></button><button class="win-btn win-min"></button><button class="win-btn win-max"></button></div><span class="win-title">PlayStation</span><div style="width:52px;"></div></div><iframe src="" data-src="https://thisissonobodyplaysgame.github.io/Chicken/"></iframe>`;
+document.body.appendChild(psifyWin);
 </script>
-
 </body>
 </html>
