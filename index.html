@@ -1032,9 +1032,8 @@
     </div>
     <input class="url-input" id="urlInput" type="text" placeholder="Enter URL or search... (e.g. google.com, youtube)" onkeydown="if(event.key==='Enter') navigate()">
     <select class="proxy-select" id="proxySelect" onchange="switchProxy()" title="Switch proxy mode">
-      <option value="0">Interstellar Proxy</option>
-      <option value="1">Holy Unblocker</option>
-      <option value="2">Direct</option>
+      <option value="0">Holy Unblocker</option>
+      <option value="1">Direct</option>
     </select>
     <button class="go-btn" onclick="navigate()">Go</button>
     <button class="nav-btn" onclick="openInNewTab()" title="Open in new tab" style="font-size:12px;">&#8599;</button>
@@ -1262,12 +1261,7 @@ function loadUrl(val) {
   frame.style.display = 'block';
 
   if (currentProxy === 0) {
-    // Interstellar proxy — opens the proxy site with the URL pre-loaded
-    frame.src = 'https://gointerstellar.app';
-    status.innerHTML = '&#9679; Loading Interstellar...';
-  } else if (currentProxy === 1) {
-    // Holy Unblocker LTS
-    frame.src = 'https://uc.robby.blue/';
+    frame.src = 'https://careersandjobs.org/';
     status.innerHTML = '&#9679; Loading Holy Unblocker...';
   } else {
     frame.src = val;
