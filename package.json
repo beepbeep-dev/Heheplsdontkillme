@@ -13,6 +13,7 @@
     "@mercuryworkshop/wisp-js": "^0.4.1",
     "@nebula-services/bare-server-node": "^2.0.4",
     "@nebula-services/ultraviolet": "^1.0.1",
+    "cors": "^2.8.5",
     "express": "^4.21.2",
     "mime": "^4.1.0"
   }
