@@ -313,13 +313,13 @@
   .browser-bar {
     display: flex;
     align-items: center;
-    gap: 10px;
-    padding: 8px 16px;
+    gap: 8px;
+    padding: 8px 14px;
     background: rgba(255,255,255,0.04);
     border-bottom: 1px solid rgba(255,255,255,0.08);
     flex-shrink: 0;
   }
-  .browser-nav { display: flex; gap: 6px; }
+  .browser-nav { display: flex; gap: 5px; }
   .nav-btn {
     width: 30px; height: 30px;
     border-radius: 8px;
@@ -346,6 +346,20 @@
     transition: border-color 0.2s, background 0.2s;
   }
   .url-input:focus { border-color: rgba(99,102,241,0.7); background: rgba(0,0,0,0.5); }
+  .proxy-select {
+    height: 32px;
+    border-radius: 8px;
+    border: 1px solid rgba(255,255,255,0.12);
+    background: rgba(255,255,255,0.07);
+    color: rgba(255,255,255,0.85);
+    padding: 0 8px;
+    font-size: 11px;
+    font-family: inherit;
+    cursor: pointer;
+    outline: none;
+    min-width: 110px;
+  }
+  .proxy-select:focus { border-color: var(--accent); }
   .go-btn {
     height: 32px;
     padding: 0 16px;
@@ -361,7 +375,72 @@
   }
   .go-btn:hover { background: #4f46e5; }
   .go-btn:active { transform: scale(0.96); }
+  .browser-shortcuts {
+    display: flex;
+    gap: 6px;
+    padding: 6px 14px;
+    background: rgba(255,255,255,0.02);
+    border-bottom: 1px solid rgba(255,255,255,0.06);
+    flex-shrink: 0;
+    overflow-x: auto;
+  }
+  .shortcut-btn {
+    height: 26px;
+    padding: 0 10px;
+    border-radius: 6px;
+    border: 1px solid rgba(255,255,255,0.08);
+    background: rgba(255,255,255,0.05);
+    color: rgba(255,255,255,0.65);
+    font-size: 11px;
+    font-family: inherit;
+    cursor: pointer;
+    white-space: nowrap;
+    transition: background 0.15s, color 0.15s;
+  }
+  .shortcut-btn:hover { background: rgba(255,255,255,0.12); color: white; }
+  .proxy-status {
+    font-size: 11px;
+    padding: 2px 8px;
+    border-radius: 4px;
+    white-space: nowrap;
+  }
+  .proxy-status.ok { color: #4ade80; }
+  .proxy-status.loading { color: #fbbf24; }
+  .proxy-status.error { color: #f87171; }
   #browserFrame { flex: 1; border: none; width: 100%; background: #111; }
+  .browser-home {
+    flex: 1;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    justify-content: center;
+    gap: 24px;
+    background: linear-gradient(160deg, #0a0a1a 0%, #111128 100%);
+    padding: 40px;
+  }
+  .browser-home h2 { font-size: 28px; font-weight: 300; color: rgba(255,255,255,0.9); }
+  .browser-home p { font-size: 13px; color: rgba(255,255,255,0.4); max-width: 420px; text-align: center; line-height: 1.6; }
+  .home-grid {
+    display: grid;
+    grid-template-columns: repeat(4, 1fr);
+    gap: 16px;
+    margin-top: 8px;
+  }
+  .home-tile {
+    width: 80px; height: 80px;
+    border-radius: 14px;
+    background: rgba(255,255,255,0.06);
+    border: 1px solid rgba(255,255,255,0.08);
+    display: flex; flex-direction: column;
+    align-items: center; justify-content: center;
+    gap: 6px;
+    cursor: pointer;
+    transition: background 0.15s, transform 0.15s;
+    font-size: 11px;
+    color: rgba(255,255,255,0.7);
+  }
+  .home-tile:hover { background: rgba(255,255,255,0.12); transform: scale(1.05); }
+  .home-tile span { font-size: 24px; }
 
   /* APP LIBRARY */
   #library {
@@ -783,6 +862,7 @@
       <button class="win-btn win-max"></button>
     </div>
     <span class="win-title" id="browserTitle">Web Browser</span>
+    <span class="proxy-status loading" id="proxyStatus">&#9679; Ready</span>
     <div style="width:52px;"></div>
   </div>
   <div class="browser-bar">
@@ -790,11 +870,44 @@
       <button class="nav-btn" onclick="browserBack()" title="Back">&#8592;</button>
       <button class="nav-btn" onclick="browserForward()" title="Forward">&#8594;</button>
       <button class="nav-btn" onclick="browserRefresh()" title="Refresh">&#8635;</button>
+      <button class="nav-btn" onclick="browserHome()" title="Home">&#8962;</button>
     </div>
-    <input class="url-input" id="urlInput" type="text" placeholder="Enter URL or search... (e.g. google.com)" onkeydown="if(event.key==='Enter') navigate()">
+    <input class="url-input" id="urlInput" type="text" placeholder="Enter URL or search... (e.g. google.com, youtube)" onkeydown="if(event.key==='Enter') navigate()">
+    <select class="proxy-select" id="proxySelect" onchange="switchProxy()" title="Switch proxy service">
+      <option value="0">Proxy 1 (CDN)</option>
+      <option value="1">Proxy 2 (UV)</option>
+      <option value="2">Proxy 3 (Alt)</option>
+      <option value="3">Direct (no proxy)</option>
+    </select>
     <button class="go-btn" onclick="navigate()">Go</button>
   </div>
-  <iframe id="browserFrame" src="about:blank" allowfullscreen></iframe>
+  <div class="browser-shortcuts">
+    <button class="shortcut-btn" onclick="loadUrl('https://www.google.com')">Google</button>
+    <button class="shortcut-btn" onclick="loadUrl('https://www.youtube.com')">YouTube</button>
+    <button class="shortcut-btn" onclick="loadUrl('https://discord.com')">Discord</button>
+    <button class="shortcut-btn" onclick="loadUrl('https://www.tiktok.com')">TikTok</button>
+    <button class="shortcut-btn" onclick="loadUrl('https://www.twitch.tv')">Twitch</button>
+    <button class="shortcut-btn" onclick="loadUrl('https://www.reddit.com')">Reddit</button>
+    <button class="shortcut-btn" onclick="loadUrl('https://twitter.com')">X/Twitter</button>
+    <button class="shortcut-btn" onclick="loadUrl('https://www.instagram.com')">Instagram</button>
+    <button class="shortcut-btn" onclick="loadUrl('https://www.spotify.com')">Spotify</button>
+    <button class="shortcut-btn" onclick="loadUrl('https://nowgg.fun')">Now.gg</button>
+  </div>
+  <div class="browser-home" id="browserHome">
+    <h2>Sunshine Browser</h2>
+    <p>Type a URL or search term above, or click a quick link to get started. Switch between proxy services if one is blocked.</p>
+    <div class="home-grid">
+      <div class="home-tile" onclick="loadUrl('https://www.google.com')"><span>&#128269;</span>Google</div>
+      <div class="home-tile" onclick="loadUrl('https://www.youtube.com')"><span>&#9654;</span>YouTube</div>
+      <div class="home-tile" onclick="loadUrl('https://discord.com')"><span>&#128172;</span>Discord</div>
+      <div class="home-tile" onclick="loadUrl('https://www.tiktok.com')"><span>&#127926;</span>TikTok</div>
+      <div class="home-tile" onclick="loadUrl('https://www.twitch.tv')"><span>&#127918;</span>Twitch</div>
+      <div class="home-tile" onclick="loadUrl('https://www.reddit.com')"><span>&#128196;</span>Reddit</div>
+      <div class="home-tile" onclick="loadUrl('https://www.spotify.com')"><span>&#127925;</span>Spotify</div>
+      <div class="home-tile" onclick="loadUrl('https://nowgg.fun')"><span>&#127918;</span>Now.gg</div>
+    </div>
+  </div>
+  <iframe id="browserFrame" src="about:blank" allowfullscreen style="display:none;"></iframe>
 </div>
 
 <!-- APP LIBRARY -->
@@ -838,8 +951,17 @@
 
     <div class="settings-section">
       <div class="settings-section-title">Web Proxy</div>
+      <div class="settings-row">
+        <span class="settings-label">Default proxy:</span>
+        <select class="settings-select" id="defaultProxy" onchange="document.getElementById('proxySelect').value=this.value; switchProxy();">
+          <option value="0">Proxy 1 (CDN Relay)</option>
+          <option value="1">Proxy 2 (UV Mirror)</option>
+          <option value="2">Proxy 3 (Alt Relay)</option>
+          <option value="3">Direct (no proxy)</option>
+        </select>
+      </div>
       <div class="proxy-note">
-        The built-in <strong>Browser</strong> app uses a web proxy to bypass restrictions. Click the browser icon in the dock, enter any URL, and browse freely. The proxy automatically routes traffic through a CDN relay.
+        The built-in <strong>Browser</strong> uses multiple proxy backends to bypass Lightspeed, GoGuardian, and other school filters. If one proxy is blocked, switch to another from the dropdown in the browser bar. Proxy 1 routes through a CDN relay, Proxy 2 uses an Ultraviolet mirror, and Proxy 3 is an alternate relay.
       </div>
     </div>
 
@@ -914,7 +1036,19 @@ function closeApp(id) {
 }
 
 // ─── WEB PROXY BROWSER ──────────────────────────────────────────────────────
-const PROXY = 'https://sunshineduponu.b-cdn.net/embed.html?url=';
+const PROXIES = [
+  { name: 'CDN Relay',  fmt: url => 'https://sunshineduponu.b-cdn.net/embed.html?url=' + encodeURIComponent(url) },
+  { name: 'UV Mirror',  fmt: url => 'https://edu.google.com.nicetryteach.cc/service/' + btoa(url) },
+  { name: 'Alt Relay',  fmt: url => 'https://sunshineduponu.b-cdn.net/embed.html?url=' + encodeURIComponent(url) },
+  { name: 'Direct',     fmt: url => url },
+];
+let currentProxy = 0;
+let lastUrl = '';
+
+function switchProxy() {
+  currentProxy = parseInt(document.getElementById('proxySelect').value);
+  if (lastUrl) loadUrl(lastUrl);
+}
 
 function openBrowser(url) {
   const win = document.getElementById('win-browser');
@@ -923,6 +1057,7 @@ function openBrowser(url) {
   const dot = document.getElementById('dot-browser');
   if (dot) dot.parentElement.classList.add('running');
   if (url) loadUrl(url);
+  else browserHome();
 }
 
 function navigate() {
@@ -937,16 +1072,56 @@ function loadUrl(val) {
   } else if (!val.startsWith('http')) {
     val = 'https://' + val;
   }
+  lastUrl = val;
   document.getElementById('urlInput').value = val;
-  document.getElementById('browserTitle').textContent = val;
-  document.getElementById('browserFrame').src = PROXY + encodeURIComponent(val);
+
+  try {
+    const host = new URL(val).hostname;
+    document.getElementById('browserTitle').textContent = host;
+  } catch(e) {
+    document.getElementById('browserTitle').textContent = val;
+  }
+
+  const status = document.getElementById('proxyStatus');
+  status.className = 'proxy-status loading';
+  status.innerHTML = '&#9679; Loading...';
+
+  const frame = document.getElementById('browserFrame');
+  const home = document.getElementById('browserHome');
+  home.style.display = 'none';
+  frame.style.display = 'block';
+
+  const proxiedUrl = PROXIES[currentProxy].fmt(val);
+  frame.src = proxiedUrl;
+
+  frame.onload = () => {
+    status.className = 'proxy-status ok';
+    status.innerHTML = '&#9679; Connected';
+  };
+  frame.onerror = () => {
+    status.className = 'proxy-status error';
+    status.innerHTML = '&#9679; Error - try another proxy';
+  };
+}
+
+function browserHome() {
+  const frame = document.getElementById('browserFrame');
+  const home = document.getElementById('browserHome');
+  frame.style.display = 'none';
+  frame.src = 'about:blank';
+  home.style.display = 'flex';
+  document.getElementById('urlInput').value = '';
+  document.getElementById('browserTitle').textContent = 'Web Browser';
+  const status = document.getElementById('proxyStatus');
+  status.className = 'proxy-status ok';
+  status.innerHTML = '&#9679; Ready';
+  lastUrl = '';
 }
 
 function browserBack() { document.getElementById('browserFrame').contentWindow?.history.back(); }
 function browserForward() { document.getElementById('browserFrame').contentWindow?.history.forward(); }
 function browserRefresh() {
-  const f = document.getElementById('browserFrame');
-  f.src = f.src;
+  if (lastUrl) loadUrl(lastUrl);
 }
 
 // ─── APP LIBRARY ────────────────────────────────────────────────────────────
