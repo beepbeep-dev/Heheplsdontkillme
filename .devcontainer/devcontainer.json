@@ -2,13 +2,13 @@
   "name": "Cole's OS",
   "image": "mcr.microsoft.com/devcontainers/javascript-node:22",
   "postCreateCommand": "npm install",
-  "postStartCommand": "npm start",
-  "forwardPorts": [8080],
-  "portsAttributes": {
-    "8080": {
-      "label": "Cole's OS",
-      "onAutoForward": "openBrowser",
-      "visibility": "public"
+  "postStartCommand": "npm run tunnel",
+  "forwardPorts": [],
+  "customizations": {
+    "vscode": {
+      "settings": {
+        "terminal.integrated.defaultProfile.linux": "bash"
+      }
     }
   }
 }
