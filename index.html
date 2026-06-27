@@ -1227,6 +1227,7 @@ function openBrowser(url) {
   openApps.add('browser');
   const dot = document.getElementById('dot-browser');
   if (dot) dot.parentElement.classList.add('running');
+  loadUV(); // lazy-load proxy scripts only now
   if (url) loadUrl(url);
   else browserHome();
 }
@@ -1669,29 +1670,32 @@ psifyWin.id = 'win-psify';
 psifyWin.innerHTML = `<div class="window-titlebar"><div class="win-controls"><button class="win-btn win-close" onclick="closeApp('psify')"></button><button class="win-btn win-min"></button><button class="win-btn win-max"></button></div><span class="win-title">PlayStation</span><div style="width:52px;"></div></div><iframe src="about:blank" data-src="https://thisissonobodyplaysgame.github.io/Chicken/"></iframe>`;
 document.body.appendChild(psifyWin);
 
-// ─── ULTRAVIOLET PROXY SETUP ──────────────────────────────────────────────
-if ('serviceWorker' in navigator) {
-  navigator.serviceWorker.register('/sw.js', { scope: '/a/' }).then(r => {
-    console.log('UV Service Worker registered');
-  }).catch(e => console.warn('SW registration failed:', e));
-}
-</script>
-<script src="/uv/uv.bundle.js"></script>
-<script src="/uv/uv.config.js"></script>
-<script>
-async function initBareMux() {
+// ─── ULTRAVIOLET PROXY — lazy load only when browser app opens ───────────
+let __uvLoaded = false;
+async function loadUV() {
+  if (__uvLoaded) return;
+  __uvLoaded = true;
+  await Promise.all([
+    new Promise((res, rej) => {
+      const s = document.createElement('script'); s.src = '/uv/uv.bundle.js';
+      s.onload = res; s.onerror = rej; document.head.appendChild(s);
+    }),
+    new Promise((res, rej) => {
+      const s = document.createElement('script'); s.src = '/uv/uv.config.js';
+      s.onload = res; s.onerror = rej; document.head.appendChild(s);
+    }),
+  ]);
+  if ('serviceWorker' in navigator) {
+    navigator.serviceWorker.register('/sw.js', { scope: '/a/' }).catch(() => {});
+  }
   try {
     const { BareMuxConnection } = await import('/bm/index.mjs');
-    const connection = new BareMuxConnection('/bm/worker.js');
-    const protocol = location.protocol === 'https:' ? 'wss' : 'ws';
-    await connection.setTransport('/ep/index.mjs', [{ wisp: protocol + '://' + location.host + '/wisp/' }]);
+    const conn = new BareMuxConnection('/bm/worker.js');
+    const proto = location.protocol === 'https:' ? 'wss' : 'ws';
+    await conn.setTransport('/ep/index.mjs', [{ wisp: proto + '://' + location.host + '/wisp/' }]);
     window.__bareMuxReady = true;
-    console.log('BareMux transport ready');
-  } catch(e) {
-    console.warn('BareMux init failed:', e);
-  }
+  } catch(e) { console.warn('BareMux init failed:', e); }
 }
-initBareMux();
 </script>
 </body>
 </html>
