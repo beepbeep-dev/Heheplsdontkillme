@@ -2,13 +2,17 @@
   "name": "Cole's OS",
   "image": "mcr.microsoft.com/devcontainers/javascript-node:22",
   "postCreateCommand": "npm install",
-  "postStartCommand": "npm run tunnel",
-  "forwardPorts": [],
+  "postStartCommand": "npm start &",
   "customizations": {
     "vscode": {
       "settings": {
         "terminal.integrated.defaultProfile.linux": "bash"
-      }
+      },
+      "extensions": []
+    },
+    "codespaces": {
+      "openFiles": []
     }
-  }
+  },
+  "onCreateCommand": "echo 'Run: npm run tunnel   in the terminal to get your URL'"
 }
