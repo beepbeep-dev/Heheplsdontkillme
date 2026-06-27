@@ -4,6 +4,7 @@
   "type": "module",
   "scripts": {
     "start": "node index.js",
+    "tunnel": "bash tunnel.sh",
     "postinstall": "node postinstall.js || true"
   },
   "dependencies": {
