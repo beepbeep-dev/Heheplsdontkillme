@@ -13,8 +13,8 @@
     --glass: rgba(255,255,255,0.12);
     --glass-border: rgba(255,255,255,0.18);
     --glass-dark: rgba(0,0,0,0.35);
-    --blur: blur(28px);
-    --blur-heavy: blur(50px);
+    --blur: blur(12px);
+    --blur-heavy: blur(20px);
     --accent: #6366f1;
     --accent2: #8b5cf6;
     --text: #f0f0f0;
@@ -133,8 +133,8 @@
     top: 0; left: 0; right: 0;
     height: 28px;
     background: rgba(0,0,0,0.45);
-    backdrop-filter: blur(30px);
-    -webkit-backdrop-filter: blur(30px);
+    backdrop-filter: blur(12px);
+    -webkit-backdrop-filter: blur(12px);
     border-bottom: 1px solid rgba(255,255,255,0.08);
     display: flex;
     align-items: center;
@@ -185,8 +185,8 @@
     padding: 10px 16px 10px;
     border-radius: 22px;
     background: rgba(255,255,255,0.13);
-    backdrop-filter: blur(40px);
-    -webkit-backdrop-filter: blur(40px);
+    backdrop-filter: blur(16px);
+    -webkit-backdrop-filter: blur(16px);
     border: 1px solid rgba(255,255,255,0.22);
     box-shadow: 0 8px 40px rgba(0,0,0,0.5), inset 0 1px 0 rgba(255,255,255,0.15);
     z-index: 10000;
@@ -259,8 +259,8 @@
     position: fixed;
     inset: 28px 0 0 0;
     background: rgba(10,10,20,0.92);
-    backdrop-filter: blur(40px);
-    -webkit-backdrop-filter: blur(40px);
+    backdrop-filter: blur(16px);
+    -webkit-backdrop-filter: blur(16px);
     display: none;
     z-index: 100000;
     flex-direction: column;
@@ -567,8 +567,8 @@
     position: fixed;
     inset: 28px 0 0 0;
     background: rgba(5,5,15,0.88);
-    backdrop-filter: blur(60px);
-    -webkit-backdrop-filter: blur(60px);
+    backdrop-filter: blur(20px);
+    -webkit-backdrop-filter: blur(20px);
     display: none;
     z-index: 150000;
     flex-direction: column;
@@ -652,8 +652,8 @@
     width: 560px;
     max-height: 80vh;
     background: rgba(20,20,30,0.95);
-    backdrop-filter: blur(60px);
-    -webkit-backdrop-filter: blur(60px);
+    backdrop-filter: blur(20px);
+    -webkit-backdrop-filter: blur(20px);
     border: 1px solid rgba(255,255,255,0.1);
     border-radius: 20px;
     display: none;
@@ -1627,6 +1627,7 @@ function applyCloak(type) {
 }
 
 function openSettings() {
+  loadWallpaperGrid();
   document.getElementById('settings-overlay').classList.add('show');
   document.getElementById('settings-panel').classList.add('show');
 }
@@ -1648,18 +1649,23 @@ const wallpapers = [
   'https://4kwallpapers.com/images/walls/thumbs_3t/11167.jpg',
 ];
 
-const bgGrid = document.getElementById('bgGrid');
-wallpapers.forEach((url, i) => {
-  const el = document.createElement('div');
-  el.className = 'bg-thumb' + (i === 0 ? ' active' : '');
-  el.style.backgroundImage = `url(${url})`;
-  el.onclick = () => {
-    document.body.style.backgroundImage = `url(${url})`;
-    document.querySelectorAll('.bg-thumb').forEach(t => t.classList.remove('active'));
-    el.classList.add('active');
-  };
-  bgGrid.appendChild(el);
-});
+// Defer wallpaper thumbnail loading until settings is opened
+function loadWallpaperGrid() {
+  const bgGrid = document.getElementById('bgGrid');
+  if (bgGrid.dataset.loaded) return;
+  bgGrid.dataset.loaded = '1';
+  wallpapers.forEach((url, i) => {
+    const el = document.createElement('div');
+    el.className = 'bg-thumb' + (i === 0 ? ' active' : '');
+    el.style.backgroundImage = `url(${url})`;
+    el.onclick = () => {
+      document.body.style.backgroundImage = `url(${url})`;
+      document.querySelectorAll('.bg-thumb').forEach(t => t.classList.remove('active'));
+      el.classList.add('active');
+    };
+    bgGrid.appendChild(el);
+  });
+}
 
 applyCloak('default');
 
